@@ -170,7 +170,7 @@ namespace boost {
 
     template <typename Target, typename Source>
     inline Target const
-    construe_cast(Source const & source, Target const & default_value) throw() {
+    construe_cast(Source const & source, Target const & default_value) {
         return boost::construe::construe_cast<
                 Target, boost::spirit::unused_type, Source
             >::call(source, default_value);
@@ -178,7 +178,7 @@ namespace boost {
 
     template <typename Target, typename Tag, typename Source>
     inline Target const
-    construe_cast(Source const & source, Target const & default_value) throw() {
+    construe_cast(Source const & source, Target const & default_value) {
         return boost::construe::construe_cast<
                 Target, Tag, Source
             >::call(source, default_value);
