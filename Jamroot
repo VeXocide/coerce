@@ -5,7 +5,8 @@
 #          http://www.boost.org/LICENSE_1_0.txt)
 
 import os ;
-use-project /boost : [ os.environ BOOST_ROOT ] ;
+use-project /boost :
+    [ os.environ BOOST_ROOT ] ;
 
 build-project libs/construe_cast/example ;
 

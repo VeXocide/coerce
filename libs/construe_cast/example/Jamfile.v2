@@ -11,4 +11,5 @@ project construe_cast_example :
         <optimization>speed
     ;
 
-exe basic : basic.cpp ;
+exe basic :
+    basic.cpp ;

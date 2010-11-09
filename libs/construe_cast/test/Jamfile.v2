@@ -10,7 +10,11 @@ project construe_cast_test :
         <source>/boost//unit_test_framework
     ;
 
-unit-test construe_cast : construe_cast.cpp ;
-unit-test karma : karma.cpp ;
-unit-test qi : qi.cpp ;
-unit-test tag : tag.cpp ;
+unit-test construe_cast :
+    construe_cast.cpp ;
+unit-test karma :
+    karma.cpp ;
+unit-test qi :
+    qi.cpp ;
+unit-test tag :
+    tag.cpp ;
