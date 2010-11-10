@@ -119,7 +119,7 @@ namespace boost {
 
             template <typename CharT, std::size_t N>
             struct iterable_impl_extent {
-                typedef CharT const type[N];
+                typedef CharT type[N];
 
                 typedef CharT * iterator;
                 typedef CharT const * const_iterator;
@@ -149,7 +149,7 @@ namespace boost {
             template <std::size_t N>
             struct iterable_impl<char [N]>
                 : iterable_impl_extent<char, N> {
-                typedef char const type[N];
+                typedef char type[N];
 
                 iterable_impl(type const & value)
                     : iterable_impl_extent<char, N>(value) { }
@@ -158,7 +158,7 @@ namespace boost {
             template <std::size_t N>
             struct iterable_impl<wchar_t [N]>
                 : iterable_impl_extent<wchar_t, N> {
-                typedef wchar_t const type[N];
+                typedef wchar_t type[N];
 
                 iterable_impl(type const & value)
                     : iterable_impl_extent<wchar_t, N>(value) { }
@@ -192,6 +192,57 @@ namespace boost {
                 private:
                     type const & value_;
             };
+
+#ifdef BOOST_CONSTRUE_ITERABLE_CHAR
+
+            template <typename CharT>
+            struct iterable_impl_char {
+                typedef CharT type;
+
+                typedef CharT * iterator;
+                typedef CharT const * const_iterator;
+
+                iterable_impl_char(CharT const & value)
+                    : value_(value) { }
+
+                inline const_iterator const
+                begin() {
+                    return &value_;
+                }
+
+                inline const_iterator const
+                end() {
+                    return &value_ + size();
+                }
+
+                inline std::size_t const
+                size() {
+                    return value_ == 0 ? 0 : 1;
+                }
+
+                private:
+                    CharT const & value_;
+            };
+
+            template <>
+            struct iterable_impl<char>
+                : iterable_impl_char<char> {
+                typedef char type;
+
+                iterable_impl(type const & value)
+                    : iterable_impl_char<type>(value) { }
+            };
+
+            template <>
+            struct iterable_impl<wchar_t>
+                : iterable_impl_char<wchar_t> {
+                typedef wchar_t type;
+
+                iterable_impl(type const & value)
+                    : iterable_impl_char<type>(value) { }
+            };
+
+#endif  // BOOST_CONSTRUE_ITERABLE_CHAR
 
             template <typename Type, typename Enable = void>
             struct iterable
