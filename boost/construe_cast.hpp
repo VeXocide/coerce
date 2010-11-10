@@ -7,6 +7,7 @@
 #ifndef BOOST_CONSTRUE_HPP
 #define BOOST_CONSTRUE_HPP
 
+#include <boost/construe/container.hpp>
 #include <boost/construe/iterable.hpp>
 #include <boost/construe/reserve.hpp>
 #include <boost/construe/tag.hpp>
@@ -16,7 +17,7 @@
 #include <boost/spirit/home/qi/auto.hpp>
 #include <boost/spirit/home/qi/char.hpp>
 #include <boost/spirit/home/qi/directive.hpp>
-#include <boost/spirit/home/support/container.hpp>
+// #include <boost/spirit/home/support/container.hpp>
 #include <boost/spirit/home/support/unused.hpp>
 #include <boost/static_assert.hpp>
 
@@ -47,7 +48,7 @@ namespace boost {
                         target,
                         source,
                         traits::is_iterable<Source>(),
-                        boost::spirit::traits::is_container<Target>());
+                        traits::is_container<Target>());
                 }
  
                 private:
