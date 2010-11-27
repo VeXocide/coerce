@@ -7,10 +7,10 @@
 #ifndef BOOST_CONSTRUE_HPP
 #define BOOST_CONSTRUE_HPP
 
-#include <boost/construe/container.hpp>
-#include <boost/construe/iterable.hpp>
-#include <boost/construe/reserve.hpp>
-#include <boost/construe/tag.hpp>
+#include <boost/construe_cast/container.hpp>
+#include <boost/construe_cast/iterable.hpp>
+#include <boost/construe_cast/reserve.hpp>
+#include <boost/construe_cast/tag.hpp>
 
 #include <boost/mpl/bool.hpp>
 #include <boost/spirit/home/karma/auto.hpp>

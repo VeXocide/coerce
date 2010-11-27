@@ -8,7 +8,7 @@
 #ifndef BOOST_CONSTRUE_RESERVE_HPP
 #define BOOST_CONSTRUE_RESERVE_HPP
 
-#include <boost/construe/tag.hpp>
+#include <boost/construe_cast/tag.hpp>
 
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
