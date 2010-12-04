@@ -7,12 +7,18 @@
 #ifndef BOOST_CONSTRUE_TAG_HPP
 #define BOOST_CONSTRUE_TAG_HPP
 
+#include <boost/proto/deep_copy.hpp>
 #include <boost/spirit/home/karma/auto.hpp>
 #include <boost/spirit/home/karma/numeric.hpp>
 #include <boost/spirit/home/qi/auto.hpp>
+#include <boost/spirit/home/qi/directive/no_case.hpp>
 #include <boost/spirit/home/qi/numeric.hpp>
+#include <boost/spirit/home/qi/operator/sequence.hpp>
+#include <boost/spirit/home/qi/operator/optional.hpp>
+#include <boost/spirit/home/qi/string/lit.hpp>
 #include <boost/spirit/home/support/unused.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/typeof/typeof.hpp>
 
 namespace boost {
 
@@ -99,11 +105,13 @@ namespace boost {
 
             template <typename Target>
             struct create_parser<construe::detail::tagged_type<Target, construe::tag::hex> > {
-                typedef spirit::hex_type type;
+                typedef proto::result_of::deep_copy<
+                    BOOST_TYPEOF(-spirit::standard::no_case["0x"] >> spirit::hex)
+                >::type type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::hex;
+                    return boost::proto::deep_copy(-spirit::standard::no_case["0x"] >> spirit::hex);
                 }
             };
 
