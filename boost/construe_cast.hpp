@@ -14,9 +14,10 @@
 
 #include <boost/mpl/bool.hpp>
 #include <boost/spirit/home/karma/auto.hpp>
+#include <boost/spirit/home/karma/numeric.hpp>
 #include <boost/spirit/home/qi/auto.hpp>
 #include <boost/spirit/home/qi/char.hpp>
-#include <boost/spirit/home/qi/directive.hpp>
+#include <boost/spirit/home/qi/numeric.hpp>
 #include <boost/spirit/home/support/unused.hpp>
 #include <boost/static_assert.hpp>
 
