@@ -85,33 +85,33 @@ namespace boost {
 
             template <typename Target>
             struct create_parser<construe::detail::tagged_type<Target, construe::tag::bin> > {
-                typedef spirit::bin_type type;
+                typedef spirit::qi::uint_parser<Target, 2> type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::bin;
+                    return spirit::qi::uint_parser<Target, 2>();
                 }
             };
 
             template <typename Target>
             struct create_parser<construe::detail::tagged_type<Target, construe::tag::oct> > {
-                typedef spirit::oct_type type;
+                typedef spirit::qi::uint_parser<Target, 8> type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::oct;
+                    return spirit::qi::uint_parser<Target, 8>();
                 }
             };
 
             template <typename Target>
             struct create_parser<construe::detail::tagged_type<Target, construe::tag::hex> > {
-                typedef proto::result_of::deep_copy<
-                    BOOST_TYPEOF(-spirit::standard::no_case["0x"] >> spirit::hex)
+                typedef typename proto::result_of::deep_copy<
+                    BOOST_TYPEOF((-spirit::standard::no_case["0x"] >> spirit::qi::uint_parser<Target, 16>()))
                 >::type type;
 
                 static inline type const
                 call() {
-                    return boost::proto::deep_copy(-spirit::standard::no_case["0x"] >> spirit::hex);
+                    return boost::proto::deep_copy(-spirit::standard::no_case["0x"] >> spirit::qi::uint_parser<Target, 16>());
                 }
             };
 
@@ -130,31 +130,31 @@ namespace boost {
 
             template <typename Source>
             struct create_generator<construe::detail::tagged_type<Source, construe::tag::bin> > {
-                typedef spirit::bin_type type;
+                typedef spirit::karma::uint_generator<Source, 2> type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::bin;
+                    return spirit::karma::uint_generator<Source, 2>();
                 }
             };
 
             template <typename Source>
             struct create_generator<construe::detail::tagged_type<Source, construe::tag::oct> > {
-                typedef spirit::oct_type type;
+                typedef spirit::karma::uint_generator<Source, 8> type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::oct;
+                    return spirit::karma::uint_generator<Source, 8>();
                 }
             };
 
             template <typename Source>
             struct create_generator<construe::detail::tagged_type<Source, construe::tag::hex> > {
-                typedef spirit::hex_type type;
+                typedef spirit::karma::uint_generator<Source, 16> type;
 
-                static inline type const &
+                static inline type const
                 call() {
-                    return spirit::hex;
+                    return spirit::karma::uint_generator<Source, 16>();
                 }
             };
 
