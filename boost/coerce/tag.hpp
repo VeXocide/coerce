@@ -114,7 +114,7 @@ namespace boost {
                     >::type parser_type;
 
                     typedef typename proto::result_of::deep_copy<
-                        BOOST_TYPEOF((-spirit::standard::no_case["0x"] >> parser_type()))
+                        BOOST_TYPEOF_TPL((-spirit::standard::no_case["0x"] >> parser_type()))
                     >::type type;
 
                     static inline type const
