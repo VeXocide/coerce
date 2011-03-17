@@ -67,5 +67,5 @@ BOOST_AUTO_TEST_CASE(call_reserve) {
 
     std::string test_string;
     call_reserve(test_string, 1u);
-    BOOST_CHECK_EQUAL(test_string.capacity(), 1u);
+    BOOST_CHECK_GE(test_string.capacity(), 1u);
 }
