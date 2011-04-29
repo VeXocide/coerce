@@ -16,6 +16,3 @@ exe coerce :
 
 exe optional :
     optional.cpp ;
-
-exe tag :
-    tag.cpp ;

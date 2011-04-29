@@ -8,8 +8,6 @@
 #include <boost/coerce/container.hpp>
 #include <boost/coerce/iterable.hpp>
 #include <boost/coerce/reserve.hpp>
-#include <boost/coerce/spirit.hpp>
-#include <boost/coerce/tag.hpp>
 
 #include <boost/mpl/bool.hpp>
 #include <boost/spirit/home/karma/auto.hpp>
@@ -37,7 +35,7 @@ namespace boost {
 
         namespace detail {
 
-            template <typename Target, typename Source, typename Tag>
+            template <typename Target, typename Source>
             struct as {
                 static inline bool
                 call(Target & target, Source const & source) {
@@ -70,7 +68,7 @@ namespace boost {
                         iterator_type end = iterable.end();
 
                         bool result = spirit::qi::parse(
-                            iterator, end, wrap<Tag>::call(target));
+                            iterator, end, target);
 
                         if (!result || !((begin < iterator && iterator < end && *iterator == 0) || iterator == end))
                             return false;
@@ -87,14 +85,14 @@ namespace boost {
                     ) {
                         call_reserve(
                             target,
-                            traits::reserve_size<Source, Tag>::call(source));
+                            traits::reserve_size<Source>::call(source));
 
                         bool result = spirit::karma::generate(
                             std::back_inserter(target),
 #if SPIRIT_VERSION <= 0x2030
                             spirit::karma::auto_,
 #endif
-                            wrap<Tag>::call(source));
+                            source);
 
                         return result;
                     }
@@ -116,19 +114,19 @@ namespace boost {
 
         namespace traits {
 
-            template <typename Target, typename Source, typename Tag, typename Enable = void>
+            template <typename Target, typename Source, typename Enable = void>
             struct as
-                : coerce::detail::as<Target, Source, Tag> { };
+                : coerce::detail::as<Target, Source> { };
 
         }  // namespace traits
 
-        template <typename Target, typename Source, typename Tag>
+        template <typename Target, typename Source>
         inline Target
-        as(Source const & source, Tag const &) {
+        as(Source const & source) {
             Target target;
 
             bool result = traits::as<
-                    Target, Source, Tag
+                    Target, Source
                 >::call(target, source);
 
             if (!result)
@@ -139,38 +137,20 @@ namespace boost {
 
         template <typename Target, typename Source>
         inline Target
-        as(Source const & source) {
-            return as<Target, Source>(source, spirit::unused);
-        }
-
-        template <typename Target, typename Source, typename Tag>
-        inline typename disable_if<
-            is_same<Target, Tag>, Target>::type
         as_default(
             Source const & source,
-            Tag const &,
             Target const & default_value = Target()
         ) {
             Target target;
 
             bool result = traits::as<
-                    Target, Source, Tag
+                    Target, Source
                 >::call(target, source);
 
             if (!result)
                 return default_value;
 
             return target;
-        }
-
-        template <typename Target, typename Source>
-        inline Target
-        as_default(
-            Source const & source,
-            Target const & default_value = Target()
-        ) {
-            return as_default<Target, Source>(
-                source, spirit::unused, default_value);
         }
 
     }  // namespace coerce

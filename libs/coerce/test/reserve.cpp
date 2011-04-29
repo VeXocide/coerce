@@ -15,37 +15,30 @@
 #include <vector>
 
 BOOST_AUTO_TEST_CASE(reserve_size) {
-    using namespace boost::coerce::tag;
-
     using boost::coerce::traits::reserve_size;
-    using boost::spirit::unused_type;
 
-    BOOST_CHECK_GT((reserve_size<char, unused_type>::call('\0')), 0u);
-    BOOST_CHECK_GT((reserve_size<wchar_t, unused_type>::call(L'\0')), 0u);
+    BOOST_CHECK_GT(reserve_size<char>::call('\0'), 0u);
+    BOOST_CHECK_GT(reserve_size<wchar_t>::call(L'\0'), 0u);
     short const test_short = 0;
-    BOOST_CHECK_GT((reserve_size<short, unused_type>::call(test_short)), 0u);
-    BOOST_CHECK_GT((reserve_size<int, unused_type>::call(0)), 0u);
-    BOOST_CHECK_GT((reserve_size<long, unused_type>::call(0l)), 0u);
+    BOOST_CHECK_GT(reserve_size<short>::call(test_short), 0u);
+    BOOST_CHECK_GT(reserve_size<int>::call(0), 0u);
+    BOOST_CHECK_GT(reserve_size<long>::call(0l), 0u);
     unsigned short const test_unsigned_short = 0u;
-    BOOST_CHECK_GT((reserve_size<unsigned short, unused_type>::call(
-        test_unsigned_short)), 0u);
-    BOOST_CHECK_GT((reserve_size<unsigned int, unused_type>::call(0u)), 0u);
-    BOOST_CHECK_GT((reserve_size<unsigned long, unused_type>::call(0ul)), 0u);
-    BOOST_CHECK_GT((reserve_size<float, unused_type>::call(0.0f)), 0u);
-    BOOST_CHECK_GT((reserve_size<double, unused_type>::call(0.0)), 0u);
-    BOOST_CHECK_GT((reserve_size<long double, unused_type>::call(0.0l)), 0u);
-    BOOST_CHECK_GT((reserve_size<bool, unused_type>::call(false)), 0u);
+    BOOST_CHECK_GT(reserve_size<unsigned short>::call(
+        test_unsigned_short), 0u);
+    BOOST_CHECK_GT(reserve_size<unsigned int>::call(0u), 0u);
+    BOOST_CHECK_GT(reserve_size<unsigned long>::call(0ul), 0u);
+    BOOST_CHECK_GT(reserve_size<float>::call(0.0f), 0u);
+    BOOST_CHECK_GT(reserve_size<double>::call(0.0), 0u);
+    BOOST_CHECK_GT(reserve_size<long double>::call(0.0l), 0u);
+    BOOST_CHECK_GT(reserve_size<bool>::call(false), 0u);
 
-    BOOST_CHECK_GT((reserve_size<char const, unused_type>::call('\0')), 0u);
-    BOOST_CHECK_GT((reserve_size<char &, unused_type>::call('\0')), 0u);
-    BOOST_CHECK_GT((reserve_size<char const &, unused_type>::call('\0')), 0u);
+    BOOST_CHECK_GT(reserve_size<char const>::call('\0'), 0u);
+    BOOST_CHECK_GT(reserve_size<char &>::call('\0'), 0u);
+    BOOST_CHECK_GT(reserve_size<char const &>::call('\0'), 0u);
 
-    BOOST_CHECK_GT((reserve_size<boost::optional<char>, unused_type>::call(
-        boost::optional<char>('\0'))), 0u);
-
-    BOOST_CHECK_GT((reserve_size<int, bin_type>::call(0)), 0u);
-    BOOST_CHECK_GT((reserve_size<int, oct_type>::call(0)), 0u);
-    BOOST_CHECK_GT((reserve_size<int, hex_type>::call(0)), 0u);
+    BOOST_CHECK_GT(reserve_size<boost::optional<char> >::call(
+        boost::optional<char>('\0')), 0u);
 }
 
 BOOST_AUTO_TEST_CASE(has_reserve) {
