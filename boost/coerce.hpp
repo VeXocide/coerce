@@ -51,8 +51,8 @@ namespace boost {
                     do_call(
                         Target & target,
                         Source const & source,
-                        mpl::true_ const,
-                        bool const
+                        mpl::true_,
+                        bool
                     ) {
                         typedef traits::iterable<Source> iterable_type;
                         typedef typename iterable_type::const_iterator iterator_type;
@@ -80,8 +80,8 @@ namespace boost {
                     do_call(
                         Target & target,
                         Source const & source,
-                        mpl::false_ const,
-                        mpl::true_ const
+                        mpl::false_,
+                        mpl::true_
                     ) {
                         call_reserve(
                             target,
@@ -97,16 +97,16 @@ namespace boost {
                         return result;
                     }
 
-                    static inline void
+                    static inline bool
                     do_call(
                         Target & target,
                         Source const & source,
-                        mpl::false_ const,
-                        mpl::false_ const
+                        mpl::false_,
+                        mpl::false_
                     ) {
-                        // TODO, implement a lexical_cast fallback
-                        
                         BOOST_STATIC_ASSERT(sizeof(Target) == 0);
+
+                        return false;
                     }
             };
 

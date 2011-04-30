@@ -4,7 +4,6 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define BOOST_COERCE_UNSPECIALIZED_RESERVE 0
 #define BOOST_TEST_MODULE reserve
 
 #include <boost/coerce.hpp>
@@ -32,10 +31,6 @@ BOOST_AUTO_TEST_CASE(reserve_size) {
     BOOST_CHECK_GT(reserve_size<double>::call(0.0), 0u);
     BOOST_CHECK_GT(reserve_size<long double>::call(0.0l), 0u);
     BOOST_CHECK_GT(reserve_size<bool>::call(false), 0u);
-
-    BOOST_CHECK_GT(reserve_size<char const>::call('\0'), 0u);
-    BOOST_CHECK_GT(reserve_size<char &>::call('\0'), 0u);
-    BOOST_CHECK_GT(reserve_size<char const &>::call('\0'), 0u);
 
     BOOST_CHECK_GT(reserve_size<boost::optional<char> >::call(
         boost::optional<char>('\0')), 0u);

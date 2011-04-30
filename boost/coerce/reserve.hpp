@@ -10,15 +10,11 @@
 
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/optional.hpp>
-#include <boost/type_traits/remove_const.hpp>
-#include <boost/type_traits/remove_reference.hpp>
+#include <boost/type_traits/detail/yes_no_type.hpp>
 
-#include <cstddef>
-
-#ifndef BOOST_COERCE_UNSPECIALIZED_RESERVE
-#define BOOST_COERCE_UNSPECIALIZED_RESERVE 16
-#endif  // BOOST_COERCE_UNSPECIALIZED_RESERVE
+#include <cstddef>  // std::size_t
 
 namespace boost {
 
@@ -29,7 +25,7 @@ namespace boost {
             template <typename Type>
             struct reserve_size_impl {
                 BOOST_STATIC_CONSTANT(std::size_t, value =
-                    BOOST_COERCE_UNSPECIALIZED_RESERVE);
+                    3 * sizeof(Type) + 1);
             };
 
             template <>
@@ -120,11 +116,8 @@ namespace boost {
                 typedef std::size_t type;
 
                 static inline type
-                call(typename remove_reference<Type>::type const &) {
-                    return reserve_size_impl<
-                        typename remove_const<
-                            typename remove_reference<Type>::type
-                        >::type>::value;
+                call(Type const &) {
+                    return reserve_size_impl<Type>::value;
                 }
             };
 
