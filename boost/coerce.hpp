@@ -6,10 +6,14 @@
 #define BOOST_COERCE_HPP
 
 #include <boost/coerce/container.hpp>
-#include <boost/coerce/iterable.hpp>
 #include <boost/coerce/reserve.hpp>
 
 #include <boost/mpl/bool.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/const_iterator.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/has_range_iterator.hpp>
+#include <boost/range/size.hpp>
 #include <boost/spirit/home/karma/auto.hpp>
 #include <boost/spirit/home/karma/char.hpp>
 #include <boost/spirit/home/karma/numeric.hpp>
@@ -18,11 +22,8 @@
 #include <boost/spirit/home/qi/char.hpp>
 #include <boost/spirit/home/qi/numeric.hpp>
 #include <boost/spirit/home/qi/operator/optional.hpp>
-#include <boost/spirit/home/support/unused.hpp>
 #include <boost/spirit/include/version.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/utility/enable_if.hpp>
 
 #include <typeinfo>  // for std::bad_cast
 
@@ -42,7 +43,7 @@ namespace boost {
                     return do_call(
                         target,
                         source,
-                        traits::is_iterable<Source>(),
+                        has_range_const_iterator<Source>(),
                         traits::is_container<Target>());
                 }
 
@@ -54,18 +55,17 @@ namespace boost {
                         mpl::true_,
                         bool
                     ) {
-                        typedef traits::iterable<Source> iterable_type;
-                        typedef typename iterable_type::const_iterator iterator_type;
+                        typedef typename range_const_iterator<Source>::type iterator_type;
 
-                        iterable_type iterable(source);
-
-                        if (iterable.size() < 1)
+                        typename range_difference<Source>::type size;
+                        if ((size = boost::size(source)) < 1)
                             return false;
 
-                        call_reserve(target, iterable.size());
+                        call_reserve(target, size);
 
-                        iterator_type begin = iterable.begin(), iterator = begin;
-                        iterator_type end = iterable.end();
+                        iterator_type begin = const_begin(source),
+                                      iterator = begin;
+                        iterator_type end = const_end(source);
 
                         bool result = spirit::qi::parse(
                             iterator, end, target);

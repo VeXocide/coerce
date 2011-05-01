@@ -10,8 +10,5 @@ project coerce_test :
         <source>/boost//unit_test_framework
     ;
 
-unit-test iterable :
-    iterable.cpp ;
-
 unit-test reserve :
     reserve.cpp ;
