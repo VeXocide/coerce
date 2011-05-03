@@ -1,9 +1,11 @@
+//           Copyright Jeroen Habraken 2010 - 2011.
+//
 // Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_HPP
-#define BOOST_COERCE_HPP
+#ifndef BOOST_COERCE_COERCE_HPP
+#define BOOST_COERCE_COERCE_HPP
 
 #include <boost/coerce/container.hpp>
 #include <boost/coerce/reserve.hpp>
@@ -58,8 +60,7 @@ namespace boost {
                         typedef typename range_const_iterator<Source>::type iterator_type;
 
                         typename range_difference<Source>::type size;
-                        if ((size = boost::size(source)) < 1)
-                            return false;
+                        size = boost::size(source);
 
                         call_reserve(target, size);
 
@@ -70,7 +71,7 @@ namespace boost {
                         bool result = spirit::qi::parse(
                             iterator, end, target);
 
-                        if (!result || !((begin < iterator && iterator < end && *iterator == 0) || iterator == end))
+                        if (!result || !((begin <= iterator && iterator < end && *iterator == 0) || iterator == end))
                             return false;
 
                         return true;
@@ -157,4 +158,4 @@ namespace boost {
 
 }  // namespace boost
 
-#endif  // BOOST_COERCE_HPP
+#endif  // BOOST_COERCE_COERCE_HPP
