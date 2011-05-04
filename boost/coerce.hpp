@@ -7,6 +7,10 @@
 #ifndef BOOST_COERCE_HPP
 #define BOOST_COERCE_HPP
 
+#ifdef _MSC_VER
+#pragma once
+#endif
+
 #include <boost/coerce/coerce.hpp>
 
 #endif  // BOOST_COERCE_HPP
