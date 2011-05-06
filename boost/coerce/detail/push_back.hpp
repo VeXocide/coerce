@@ -4,8 +4,8 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_PUSH_BACK_HPP
-#define BOOST_COERCE_PUSH_BACK_HPP
+#ifndef BOOST_COERCE_DETAIL_PUSH_BACK_HPP
+#define BOOST_COERCE_DETAIL_PUSH_BACK_HPP
 
 #ifdef _MSC_VER
 #pragma once
@@ -35,4 +35,4 @@ namespace boost { namespace coerce { namespace detail {
 
 } } }  // namespace boost::coerce::detail
 
-#endif  // BOOST_COERCE_PUSH_BACK_HPP
+#endif  // BOOST_COERCE_DETAIL_PUSH_BACK_HPP

@@ -8,7 +8,6 @@ project coerce_example :
     requirements
         <dependency>/boost//headers
         <include>../../../
-        <optimization>speed
     ;
 
 exe coerce :
