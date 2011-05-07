@@ -11,23 +11,19 @@
 #pragma once
 #endif
 
-#include <boost/coerce/domain.hpp>
-#include <boost/coerce/karma.hpp>
-#include <boost/coerce/qi.hpp>
+#include <boost/coerce/detail/backend.hpp>
 
 #include <typeinfo>  // for std::bad_cast
 
 namespace boost { namespace coerce {
 
-    namespace detail {
+    namespace traits {
 
         template <typename Target, typename Source, typename Enable = void>
         struct as
-            : traits::as<
-                typename traits::domain<Target, Source>::type, Target, Source
-            > { };
+            : detail::backend<Target, Source>::type { };
 
-    }  // namespace detail
+    }  // namespace traits
 
     class bad_cast
         : public std::bad_cast { };
@@ -37,7 +33,7 @@ namespace boost { namespace coerce {
     as(Source const & source) {
         Target target;
 
-        bool result = detail::as<
+        bool result = traits::as<
                 Target, Source
             >::call(target, source);
 
@@ -56,7 +52,7 @@ namespace boost { namespace coerce {
     ) {
         Target target;
 
-        bool result = detail::as<
+        bool result = traits::as<
                 Target, Source
             >::call(target, source);
 

@@ -13,5 +13,8 @@ project coerce_example :
 exe coerce :
     coerce.cpp ;
 
+exe domain :
+    domain.cpp ;
+
 exe optional :
     optional.cpp ;

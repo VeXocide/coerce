@@ -8,7 +8,6 @@
 #include <boost/optional.hpp>
 
 #include <iostream>
-#include <ostream>
 
 namespace std {
 

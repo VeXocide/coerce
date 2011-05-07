@@ -7,7 +7,6 @@
 #include <boost/coerce.hpp>
 
 #include <iostream>
-#include <ostream>
 #include <string>
 
 int
