@@ -16,7 +16,6 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/const_iterator.hpp>
 #include <boost/range/end.hpp>
-#include <boost/range/has_range_iterator.hpp>
 #include <boost/range/size.hpp>
 #include <boost/spirit/home/qi/auto.hpp>
 #include <boost/spirit/home/qi/char.hpp>

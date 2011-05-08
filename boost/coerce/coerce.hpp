@@ -12,6 +12,8 @@
 #endif
 
 #include <boost/coerce/detail/backend.hpp>
+#include <boost/coerce/detail/push_back.hpp>
+#include <boost/range/has_range_iterator.hpp>
 
 #include <typeinfo>  // for std::bad_cast
 
@@ -21,7 +23,10 @@ namespace boost { namespace coerce {
 
         template <typename Target, typename Source, typename Enable = void>
         struct as
-            : detail::backend<Target, Source>::type { };
+            : detail::backend<
+                typename detail::has_push_back<Target>::type,
+                typename has_range_const_iterator<Source>::type
+            >::type { };
 
     }  // namespace traits
 
