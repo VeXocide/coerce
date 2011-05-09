@@ -1,7 +1,7 @@
 //           Copyright Jeroen Habraken 2010 - 2011.
 //
 // Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file ../../LICENSE_1_0.txt or copy at
+// (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef BOOST_COERCE_DETAIL_KARMA_HPP
@@ -19,6 +19,8 @@
 #include <boost/spirit/home/karma/operator/optional.hpp>
 #include <boost/spirit/include/version.hpp>
 
+#include <iterator>  // std::back_inserter
+
 namespace boost { namespace coerce { namespace detail {
 
     struct karma {
@@ -26,8 +28,7 @@ namespace boost { namespace coerce { namespace detail {
         static inline bool
         call(Target & target, Source const & source) {
             detail::call_reserve(
-                target,
-                traits::reserve_size<Source>::call(source));
+                target, traits::reserve_size<Source>::call(source));
 
             bool result = spirit::karma::generate(
                 std::back_inserter(target),
