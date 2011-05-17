@@ -10,5 +10,5 @@ project coerce_test :
         <source>/boost//unit_test_framework
     ;
 
-unit-test reserve :
-    reserve.cpp ;
+unit-test integral :
+    integral.cpp ;

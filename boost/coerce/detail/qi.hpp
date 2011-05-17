@@ -11,7 +11,7 @@
 #pragma once
 #endif
 
-#include <boost/coerce/detail/reserve.hpp>
+#include <boost/coerce/reserve.hpp>
 
 #include <boost/range/begin.hpp>
 #include <boost/range/const_iterator.hpp>
