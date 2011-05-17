@@ -21,10 +21,10 @@
 
 namespace boost { namespace coerce { namespace traits {
 
-    template <typename Type>
+    template <typename T>
     struct reserve_size_impl {
         BOOST_STATIC_CONSTANT(std::size_t, value =
-            3 * sizeof(Type) + 1);
+            3 * sizeof(T) + 1);
     };
 
     template <>
@@ -37,12 +37,12 @@ namespace boost { namespace coerce { namespace traits {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
-    template <typename Type>
+    template <typename T>
     struct reserve_size_impl_integral {
         BOOST_STATIC_CONSTANT(std::size_t, value =
-            std::numeric_limits<Type>::is_signed +
+            std::numeric_limits<T>::is_signed +
             1 +
-            std::numeric_limits<Type>::digits10);
+            std::numeric_limits<T>::digits10);
     };
 
     template <>
@@ -81,12 +81,12 @@ namespace boost { namespace coerce { namespace traits {
 
 #endif  // BOOST_HAS_LONG_LONG
 
-    template <typename Type>
+    template <typename T>
     struct reserve_size_impl_floating_point {
         BOOST_STATIC_CONSTANT(std::size_t, value =
-            std::numeric_limits<Type>::is_signed +
+            std::numeric_limits<T>::is_signed +
             8 +
-            std::numeric_limits<Type>::digits10);
+            std::numeric_limits<T>::digits10);
     };
 
     template <>
@@ -106,17 +106,17 @@ namespace boost { namespace coerce { namespace traits {
         BOOST_STATIC_CONSTANT(std::size_t, value = 5);
     };
 
-    template <typename Type>
-    struct reserve_size_impl<boost::optional<Type> >
-        : reserve_size_impl<Type> { };
+    template <typename T>
+    struct reserve_size_impl<boost::optional<T> >
+        : reserve_size_impl<T> { };
 
-    template <typename Type, typename Enable = void>
+    template <typename T, typename Enable = void>
     struct reserve_size {
         typedef std::size_t type;
 
         static inline type
-        call(Type const &) {
-            return reserve_size_impl<Type>::value;
+        call(T const &) {
+            return reserve_size_impl<T>::value;
         }
     };
 

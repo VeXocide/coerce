@@ -15,6 +15,8 @@
 #include <boost/coerce/detail/push_back.hpp>
 #include <boost/range/has_range_iterator.hpp>
 
+#include <boost/throw_exception.hpp>
+
 #include <typeinfo>  // for std::bad_cast
 
 namespace boost { namespace coerce {
@@ -43,7 +45,7 @@ namespace boost { namespace coerce {
             >::call(target, source);
 
         if (!result) {
-            throw coerce::bad_cast();
+            throw_exception(coerce::bad_cast());
         }
 
         return target;
