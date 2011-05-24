@@ -26,7 +26,7 @@ namespace boost { namespace coerce {
         template <typename Target, typename Source, typename Enable = void>
         struct as
             : detail::backend<
-                typename detail::has_push_back<Target>::type,
+                typename detail::is_back_insertion_sequence<Target>::type,
                 typename has_range_const_iterator<Source>::type
             >::type { };
 
