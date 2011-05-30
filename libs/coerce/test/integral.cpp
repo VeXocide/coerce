@@ -84,7 +84,7 @@ struct target_test {
         CHECK_THROW(T, "-9223372036854775809");
 
         CHECK_THROW(T, "23X");
-        CHECK_EQUAL(T, "23\0X", static_cast<T>(23));
+        CHECK_THROW(T, "23\0X");
 
         CHECK_THROW(T, "XXX");
     }

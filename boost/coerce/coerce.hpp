@@ -13,7 +13,7 @@
 
 #include <boost/coerce/detail/backend.hpp>
 #include <boost/coerce/detail/push_back.hpp>
-#include <boost/range/has_range_iterator.hpp>
+#include <boost/coerce/string.hpp>
 
 #include <boost/throw_exception.hpp>
 
@@ -27,7 +27,7 @@ namespace boost { namespace coerce {
         struct as
             : detail::backend<
                 typename detail::is_back_insertion_sequence<Target>::type,
-                typename has_range_const_iterator<Source>::type
+                typename traits::is_string<Source>::type
             >::type { };
 
     }  // namespace traits
