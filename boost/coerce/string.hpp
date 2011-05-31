@@ -49,7 +49,7 @@ namespace boost { namespace coerce { namespace traits {
         }
 
         inline size_type
-        size() {
+        size() const {
             return std::char_traits<
                     typename remove_const<T>::type
                 >::length(value_);
