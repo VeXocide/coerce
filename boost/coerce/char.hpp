@@ -25,7 +25,7 @@ namespace boost { namespace coerce { namespace traits {
     struct is_char_impl<char>
         : mpl::true_ { };
 
-#ifndef BOOST_NO_WCHAR_T
+#ifndef BOOST_NO_INTRINSIC_WCHAR_T
     template <>
     struct is_char_impl<wchar_t>
         : mpl::true_ { };

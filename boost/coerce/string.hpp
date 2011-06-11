@@ -31,40 +31,31 @@ namespace boost { namespace coerce { namespace traits {
     template <typename T>
     struct string_impl_pointer<T, mpl::true_> {
         typedef T * type;
-            
-        typedef T const * const_iterator;
+
+        typedef T const *const_iterator;
         typedef std::size_t size_type;
 
-        string_impl_pointer(T const * const value)
-            : value_(value) { }
-
-        inline const_iterator
-        begin() const {
-            return value_;
+        static inline const_iterator
+        begin(type const value) {
+            return value;
         }
 
-        inline const_iterator
-        end() const {
-            return value_ + size();
+        static inline const_iterator
+        end(type const value) {
+            return value + length(value) + 1;
         }
 
-        inline size_type
-        size() const {
+        static inline size_type
+        length(type const value) {
             return std::char_traits<
                     typename remove_const<T>::type
-                >::length(value_);
+                >::length(value);
         }
-
-        private:
-            T const * const value_;
     };
 
     template <typename T>
     struct string_impl<T *>
-        : string_impl_pointer<T> {
-        string_impl(T const * const value)
-            : string_impl_pointer<T>(value) { }
-    };
+        : string_impl_pointer<T> { };
 
     template <typename T, std::size_t N, typename U = typename is_char<T>::type>
     struct string_impl_extent
@@ -74,37 +65,28 @@ namespace boost { namespace coerce { namespace traits {
     struct string_impl_extent<T, N, mpl::true_> {
         typedef T type[N];
 
-        typedef T const * const_iterator;
+        typedef T const *const_iterator;
         typedef std::size_t size_type;
 
-        string_impl_extent(T const (& value)[N])
-            : value_(value) { }
-
-        inline const_iterator
-        begin() const {
-            return &value_[0];
+        static inline const_iterator
+        begin(type const & value) {
+            return &value[0];
         }
 
-        inline const_iterator
-        end() const {
-            return &value_[0] + size();
+        static inline const_iterator
+        end(type const & value) {
+            return &value[0] + length(value);
         }
 
-        inline size_type
-        size() const {
-            return value_[N - 1] == 0 ? N - 1 : N;
+        static inline size_type
+        length(type const & value) {
+            return value[N - 1] == 0 ? N - 1 : N;
         }
-
-        private:
-            T const (& value_)[N];
     };
 
     template <typename T, std::size_t N>
     struct string_impl<T [N]>
-        : string_impl_extent<T, N> {
-        string_impl(T const (& value)[N])
-            : string_impl_extent<T, N>(value) { }
-    };
+        : string_impl_extent<T, N> { };
 
     template <typename T, typename Traits, typename Allocator>
     struct string_impl<std::basic_string<T, Traits, Allocator> > {
@@ -113,34 +95,25 @@ namespace boost { namespace coerce { namespace traits {
         typedef typename type::const_iterator const_iterator;
         typedef typename type::size_type size_type;
 
-        string_impl(type const & value)
-            : value_(value) { }
-
-        inline const_iterator
-        begin() const {
-            return value_.begin();
+        static inline const_iterator
+        begin(type const & value) {
+            return value.begin();
         }
 
-        inline const_iterator
-        end() const {
-            return value_.end();
+        static inline const_iterator
+        end(type const & value) {
+            return value.end();
         }
 
-        inline size_type
-        size() const {
-            return value_.size();
+        static inline size_type
+        length(type const & value) {
+            return value.length();
         }
-
-        private:
-            type const & value_;
     };
 
-    template <typename T, typename Enable = void>
+    template <typename T>
     struct string
-        : string_impl<T> {
-        string(T const & value)
-            : string_impl<T>(value) { }
-    };
+        : string_impl<T> { };
 
     template <typename T>
     struct is_string

@@ -25,20 +25,19 @@ namespace boost { namespace coerce { namespace detail {
         template <typename Target, typename Source>
         static inline bool
         call(Target & target, Source const & source) {
-            typedef traits::string<Source> string_type;
-            string_type string(source);
+            typedef traits::string<Source> string_traits;
 
-            typedef typename string_type::size_type size_type;
-            size_type size = string.size();
+            typename string_traits::size_type
+                length = string_traits::length(source);
+            detail::call_reserve(target, length);
 
-            detail::call_reserve(target, size);
+            typename string_traits::const_iterator
+                begin = string_traits::begin(source), iterator = begin;
 
-            typename string_type::const_iterator
-                begin = string.begin(), iterator = begin, end = string.end();
+            bool result = spirit::qi::parse(
+                iterator, string_traits::end(source), target);
 
-            bool result = spirit::qi::parse(iterator, end, target);
-
-            if (static_cast<size_type>(iterator - begin) != size) {
+            if (static_cast<typename string_traits::size_type>(iterator - begin) != length) {
                 return false;
             }
 
