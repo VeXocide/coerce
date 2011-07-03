@@ -20,8 +20,6 @@
 #include <boost/spirit/home/karma/operator/optional.hpp>
 #include <boost/spirit/include/version.hpp>
 
-// #include <iterator>  // std::back_inserter
-
 namespace boost { namespace coerce { namespace detail {
 
     struct karma {
