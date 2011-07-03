@@ -16,5 +16,8 @@ unit-test integral :
 unit-test karma :
     karma.cpp ;
 
+unit-test reserve :
+    reserve.cpp ;
+
 unit-test qi :
     qi.cpp ;

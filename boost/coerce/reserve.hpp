@@ -23,8 +23,7 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T>
     struct reserve_size_impl {
-        BOOST_STATIC_CONSTANT(std::size_t, value =
-            3 * sizeof(T) + 1);
+        BOOST_STATIC_CONSTANT(std::size_t, value = 0);
     };
 
     template <>
