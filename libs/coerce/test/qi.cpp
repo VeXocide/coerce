@@ -9,9 +9,11 @@
 #include <boost/coerce.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <string>
+
 BOOST_AUTO_TEST_CASE(qi) {
     using namespace boost;
-    
+
     char char_extent[1] = {'1'};
     BOOST_CHECK_EQUAL(coerce::as<int>(char_extent), 1);
     wchar_t wchar_t_extent[1] = {'1'};

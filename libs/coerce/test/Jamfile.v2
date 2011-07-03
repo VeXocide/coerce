@@ -13,5 +13,8 @@ project coerce_test :
 unit-test integral :
     integral.cpp ;
 
+unit-test karma :
+    karma.cpp ;
+
 unit-test qi :
     qi.cpp ;
