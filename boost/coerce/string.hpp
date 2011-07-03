@@ -110,7 +110,7 @@ namespace boost { namespace coerce { namespace traits {
         }
     };
 
-    template <typename T>
+    template <typename T, typename Enable = void>
     struct string
         : string_impl<T> { };
 
