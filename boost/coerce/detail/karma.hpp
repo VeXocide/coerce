@@ -12,6 +12,7 @@
 #endif
 
 #include <boost/coerce/reserve.hpp>
+#include <boost/coerce/sequence.hpp>
 
 #include <boost/spirit/home/karma/auto.hpp>
 #include <boost/spirit/home/karma/char.hpp>
@@ -19,7 +20,7 @@
 #include <boost/spirit/home/karma/operator/optional.hpp>
 #include <boost/spirit/include/version.hpp>
 
-#include <iterator>  // std::back_inserter
+// #include <iterator>  // std::back_inserter
 
 namespace boost { namespace coerce { namespace detail {
 
@@ -31,7 +32,7 @@ namespace boost { namespace coerce { namespace detail {
                 target, traits::reserve_size<Source>::call(source));
 
             bool result = spirit::karma::generate(
-                std::back_inserter(target),
+                traits::sequence<Target>::back_inserter(target),
 #if SPIRIT_VERSION <= 0x2030
                 spirit::karma::auto_,
 #endif
