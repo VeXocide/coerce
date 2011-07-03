@@ -11,7 +11,6 @@
 
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/not.hpp>
-#include <boost/optional.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
