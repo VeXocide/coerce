@@ -55,3 +55,10 @@ BOOST_AUTO_TEST_CASE(qi) {
     BOOST_CHECK_EQUAL(coerce::as<int>(std::string("1")), 1);
     BOOST_CHECK_EQUAL(coerce::as<int>(std::wstring(L"1")), 1);
 }
+
+BOOST_AUTO_TEST_CASE(throw_) {
+    using namespace boost;
+
+    BOOST_CHECK_THROW(coerce::as<int>("1\0"), coerce::bad_cast);
+    BOOST_CHECK_THROW(coerce::as<int>("1\0" "1"), coerce::bad_cast);
+}

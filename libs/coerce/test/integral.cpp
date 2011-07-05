@@ -6,12 +6,6 @@
 
 #define BOOST_TEST_MODULE integral
 
-#define CHECK_EQUAL(type, source, target) \
-    BOOST_CHECK_EQUAL(boost::coerce::as<type>(source), target)
-
-#define CHECK_THROW(type, source) \
-    BOOST_CHECK_THROW(boost::coerce::as<type>(source), boost::coerce::bad_cast)
-
 #include <boost/coerce.hpp>
 #include <boost/limits.hpp>
 #include <boost/mpl/for_each.hpp>
@@ -22,11 +16,14 @@ struct source_test {
     template <typename T>
     void
     operator()(T) {
-        CHECK_EQUAL(std::string, static_cast<T>(0), "0");
+        using namespace boost;
 
-        CHECK_EQUAL(std::string, static_cast<T>(23), "23");
+        BOOST_CHECK_EQUAL(coerce::as<std::string>(static_cast<T>(0)), "0");
+
+        BOOST_CHECK_EQUAL(coerce::as<std::string>(static_cast<T>(23)), "23");
         if (std::numeric_limits<T>::is_signed) {
-            CHECK_EQUAL(std::string, static_cast<T>(-23), "-23");
+            BOOST_CHECK_EQUAL(
+                coerce::as<std::string>(static_cast<T>(-23)), "-23");
         }
     }
 };
@@ -54,39 +51,41 @@ struct target_test {
     template <typename T>
     void
     operator()(T) {
-        CHECK_EQUAL(T, "0", static_cast<T>(0));
+        using namespace boost;
+
+        BOOST_CHECK_EQUAL(coerce::as<T>("0"), static_cast<T>(0));
         if (std::numeric_limits<T>::is_signed) {
-            CHECK_EQUAL(T, "+0", static_cast<T>(0));
-            CHECK_EQUAL(T, "-0", static_cast<T>(0));
+            BOOST_CHECK_EQUAL(coerce::as<T>("+0"), static_cast<T>(0));
+            BOOST_CHECK_EQUAL(coerce::as<T>("-0"), static_cast<T>(0));
         }
 
-        CHECK_THROW(T, "");
-        CHECK_THROW(T, "+");
-        CHECK_THROW(T, "-");
+        BOOST_CHECK_THROW(coerce::as<T>(""), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("+"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("-"), coerce::bad_cast);
 
-        CHECK_EQUAL(T, "23", static_cast<T>(23));
+        BOOST_CHECK_EQUAL(coerce::as<T>("23"), static_cast<T>(23));
         if (std::numeric_limits<T>::is_signed) {
-            CHECK_EQUAL(T, "+23", static_cast<T>(23));
-            CHECK_EQUAL(T, "-23", static_cast<T>(-23));
+            BOOST_CHECK_EQUAL(coerce::as<T>("23"), static_cast<T>(23));
+            BOOST_CHECK_EQUAL(coerce::as<T>("-23"), static_cast<T>(-23));
         }
 
-        CHECK_EQUAL(T, "00023", static_cast<T>(23));
+        BOOST_CHECK_EQUAL(coerce::as<T>("00023"), static_cast<T>(23));
         if (std::numeric_limits<T>::is_signed) {
-            CHECK_EQUAL(T, "+00023", static_cast<T>(23));
-            CHECK_EQUAL(T, "-00023", static_cast<T>(-23));
+            BOOST_CHECK_EQUAL(coerce::as<T>("+00023"), static_cast<T>(23));
+            BOOST_CHECK_EQUAL(coerce::as<T>("-00023"), static_cast<T>(-23));
         }
 
-        CHECK_THROW(T, "   23");
-        CHECK_THROW(T, "23   ");
-        CHECK_THROW(T, "   23   ");
+        BOOST_CHECK_THROW(coerce::as<T>("   23"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("23   "), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("   23   "), coerce::bad_cast);
 
-        CHECK_THROW(T, "18446744073709551616");
-        CHECK_THROW(T, "-9223372036854775809");
+        BOOST_CHECK_THROW(
+            coerce::as<T>("18446744073709551616"), coerce::bad_cast);
+        BOOST_CHECK_THROW(
+            coerce::as<T>("-9223372036854775809"), coerce::bad_cast);
 
-        CHECK_THROW(T, "23X");
-        CHECK_THROW(T, "23\0X");
-
-        CHECK_THROW(T, "XXX");
+        BOOST_CHECK_THROW(coerce::as<T>("23X"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("XXX"), coerce::bad_cast);
     }
 };
 
