@@ -69,6 +69,11 @@ struct target_test {
             BOOST_CHECK_EQUAL(coerce::as<T>("-23"), static_cast<T>(-23));
         }
 
+        BOOST_CHECK_THROW(coerce::as<T>("++23"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("+-23"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("-+23"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("--23"), coerce::bad_cast);
+
         BOOST_CHECK_EQUAL(coerce::as<T>("00023"), static_cast<T>(23));
         if (std::numeric_limits<T>::is_signed) {
             BOOST_CHECK_EQUAL(coerce::as<T>("+00023"), static_cast<T>(23));
@@ -78,6 +83,10 @@ struct target_test {
         BOOST_CHECK_THROW(coerce::as<T>("   23"), coerce::bad_cast);
         BOOST_CHECK_THROW(coerce::as<T>("23   "), coerce::bad_cast);
         BOOST_CHECK_THROW(coerce::as<T>("   23   "), coerce::bad_cast);
+
+        BOOST_CHECK_THROW(coerce::as<T>("23.0"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("+23.0"), coerce::bad_cast);
+        BOOST_CHECK_THROW(coerce::as<T>("-23.0"), coerce::bad_cast);
 
         BOOST_CHECK_THROW(
             coerce::as<T>("18446744073709551616"), coerce::bad_cast);
@@ -107,3 +116,67 @@ BOOST_AUTO_TEST_CASE(target) {
 
     boost::mpl::for_each<integral_types>(test);
 }
+
+/*  lexical_cast
+
+    BOOST_CHECK_EQUAL(1, lexical_cast<int>('1'));
+    BOOST_CHECK_EQUAL(0, lexical_cast<int>('0'));
+    BOOST_CHECK_THROW(lexical_cast<int>('A'), bad_lexical_cast);
+    BOOST_CHECK_EQUAL(1, lexical_cast<int>(1));
+    BOOST_CHECK_EQUAL(1, lexical_cast<int>(1.0));
+
+    BOOST_CHECK_EQUAL(
+        (std::numeric_limits<int>::max)(),
+        lexical_cast<int>((std::numeric_limits<int>::max)()));
+
+    BOOST_CHECK_EQUAL(
+        (std::numeric_limits<int>::min)(),
+        lexical_cast<int>((std::numeric_limits<int>::min)()));
+
+    BOOST_CHECK_THROW(lexical_cast<int>(1.23), bad_lexical_cast);
+
+    BOOST_CHECK_THROW(lexical_cast<int>(1e20), bad_lexical_cast);
+    BOOST_CHECK_EQUAL(1, lexical_cast<int>(true));
+    BOOST_CHECK_EQUAL(0, lexical_cast<int>(false));
+    BOOST_CHECK_EQUAL(123, lexical_cast<int>("123"));
+    BOOST_CHECK_THROW(
+        lexical_cast<int>(" 123"), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<int>(""), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<int>("Test"), bad_lexical_cast);
+    BOOST_CHECK_EQUAL(123, lexical_cast<int>("123"));
+    BOOST_CHECK_EQUAL(123, lexical_cast<int>(std::string("123")));
+    BOOST_CHECK_THROW(
+        lexical_cast<int>(std::string(" 123")), bad_lexical_cast);
+    BOOST_CHECK_THROW(
+        lexical_cast<int>(std::string("")), bad_lexical_cast);
+    BOOST_CHECK_THROW(
+        lexical_cast<int>(std::string("Test")), bad_lexical_cast);
+
+    BOOST_CHECK(lexical_cast<T>("-1") == static_cast<T>(-1));
+    BOOST_CHECK(lexical_cast<T>("-9") == static_cast<T>(-9));
+    BOOST_CHECK(lexical_cast<T>(-1) == static_cast<T>(-1));
+    BOOST_CHECK(lexical_cast<T>(-9) == static_cast<T>(-9));
+
+    BOOST_CHECK_THROW(lexical_cast<T>("-1.0"), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>("-9.0"), bad_lexical_cast);
+    BOOST_CHECK(lexical_cast<T>(-1.0) == static_cast<T>(-1));
+    BOOST_CHECK(lexical_cast<T>(-9.0) == static_cast<T>(-9));
+
+    BOOST_CHECK(lexical_cast<T>(static_cast<T>(1)) == static_cast<T>(1));
+    BOOST_CHECK(lexical_cast<T>(static_cast<T>(9)) == static_cast<T>(9));
+    BOOST_CHECK_THROW(lexical_cast<T>(1.1f), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>(1.1), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>(1.1L), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>(1.0001f), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>(1.0001), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>(1.0001L), bad_lexical_cast);
+
+    BOOST_CHECK(lexical_cast<T>("+1") == static_cast<T>(1) );
+    BOOST_CHECK(lexical_cast<T>("+9") == static_cast<T>(9) );
+    BOOST_CHECK(lexical_cast<T>("+10") == static_cast<T>(10) );
+    BOOST_CHECK(lexical_cast<T>("+90") == static_cast<T>(90) );
+    BOOST_CHECK_THROW(lexical_cast<T>("++1"), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>("-+9"), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>("--1"), bad_lexical_cast);
+    BOOST_CHECK_THROW(lexical_cast<T>("+-9"), bad_lexical_cast);
+*/

@@ -13,6 +13,12 @@ project coerce_test :
 unit-test bool :
     bool.cpp ;
 
+unit-test char :
+    char.cpp ;
+
+unit-test default_ :
+    default.cpp ;
+
 unit-test integral :
     integral.cpp ;
 
@@ -24,3 +30,6 @@ unit-test reserve :
 
 unit-test qi :
     qi.cpp ;
+
+unit-test wchar_t :
+    wchar_t.cpp ;
