@@ -35,28 +35,3 @@ BOOST_AUTO_TEST_CASE(target) {
     BOOST_CHECK_THROW(coerce::as<wchar_t>("XXX"), coerce::bad_cast);
 #endif
 }
-
-/*  lexical_cast
-
-    BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>(1));
-    BOOST_CHECK_EQUAL(L'0', lexical_cast<wchar_t>(0));
-    BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>('1'));
-    BOOST_CHECK_EQUAL(L'0', lexical_cast<wchar_t>('0'));
-    BOOST_CHECK_THROW(lexical_cast<wchar_t>(123), bad_lexical_cast);
-    BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>(1.0));
-    BOOST_CHECK_EQUAL(L'0', lexical_cast<wchar_t>(0.0));
-    BOOST_CHECK_EQUAL(L'1', lexical_cast<wchar_t>(true));
-    BOOST_CHECK_EQUAL(L'0', lexical_cast<wchar_t>(false));
-    BOOST_CHECK_EQUAL(L'A', lexical_cast<wchar_t>(L'A'));
-    BOOST_CHECK_EQUAL(L' ', lexical_cast<wchar_t>(L' '));
-    BOOST_CHECK_EQUAL(L'A', lexical_cast<wchar_t>(L"A"));
-    BOOST_CHECK_EQUAL(L' ', lexical_cast<wchar_t>(L" "));
-    BOOST_CHECK_THROW(lexical_cast<wchar_t>(L""), bad_lexical_cast);
-    BOOST_CHECK_THROW(lexical_cast<wchar_t>(L"Test"), bad_lexical_cast);
-    BOOST_CHECK_EQUAL(L'A', lexical_cast<wchar_t>(std::wstring(L"A")));
-    BOOST_CHECK_EQUAL(L' ', lexical_cast<wchar_t>(std::wstring(L" ")));
-    BOOST_CHECK_THROW(
-        lexical_cast<wchar_t>(std::wstring(L"")), bad_lexical_cast);
-    BOOST_CHECK_THROW(
-        lexical_cast<wchar_t>(std::wstring(L"Test")), bad_lexical_cast);
-*/

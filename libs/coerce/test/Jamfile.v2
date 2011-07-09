@@ -16,8 +16,11 @@ unit-test bool :
 unit-test char :
     char.cpp ;
 
-unit-test default_ :
+unit-test "default" :
     default.cpp ;
+
+unit-test floating_point :
+    floating_point.cpp ;
 
 unit-test integral :
     integral.cpp ;
