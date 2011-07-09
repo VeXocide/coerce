@@ -77,39 +77,24 @@ struct target_test {
         BOOST_CHECK_CLOSE_FRACTION(
             coerce::as<T>("1.01828183"),
             static_cast<T>(1.01828183L),
-            std::numeric_limits<double>::epsilon());
+            std::numeric_limits<T>::epsilon());
 
         BOOST_CHECK_CLOSE_FRACTION(
             coerce::as<T>("1.0e23"),
             static_cast<T>(1.0e23L),
-            std::numeric_limits<double>::epsilon());
+            std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
             coerce::as<T>("1.0E23"),
             static_cast<T>(1.0e23L),
-            std::numeric_limits<double>::epsilon());
+            std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
             coerce::as<T>("1.0e+23"),
             static_cast<T>(1.0e23L),
-            std::numeric_limits<double>::epsilon());
+            std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
             coerce::as<T>("1.0e-23"),
             static_cast<T>(1.0e-23L),
-            std::numeric_limits<double>::epsilon());
-        
-        if (std::numeric_limits<T>::max() > 1.0e2603L) {
-            BOOST_CHECK_CLOSE_FRACTION(
-                coerce::as<T>("1.0e2603"),
-                static_cast<T>(1.0e2603L),
-                std::numeric_limits<double>::epsilon());
-            BOOST_CHECK_CLOSE_FRACTION(
-                coerce::as<T>("1.0e+2603"),
-                static_cast<T>(1.0e2603L),
-                std::numeric_limits<double>::epsilon());
-            BOOST_CHECK_CLOSE_FRACTION(
-                coerce::as<T>("1.0e-2603"),
-                static_cast<T>(1.0e-2603L),
-                std::numeric_limits<double>::epsilon());
-        }
+            std::numeric_limits<T>::epsilon());
 
         BOOST_CHECK_EQUAL(math::fpclassify(coerce::as<T>("NaN")), FP_NAN);
         BOOST_CHECK_EQUAL(math::fpclassify(coerce::as<T>("-NaN")), FP_NAN);
