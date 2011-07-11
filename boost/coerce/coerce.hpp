@@ -14,8 +14,12 @@
 #include <boost/coerce/detail/backend.hpp>
 #include <boost/coerce/sequence.hpp>
 #include <boost/coerce/string.hpp>
+#include <boost/coerce/tag.hpp>
 
+#include <boost/config.hpp>
 #include <boost/throw_exception.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/utility/enable_if.hpp>
 
 #include <typeinfo>  // for std::bad_cast
 
@@ -23,7 +27,12 @@ namespace boost { namespace coerce {
 
     namespace traits {
 
-        template <typename Target, typename Source, typename Enable = void>
+        template <
+            typename Target
+          , typename Source
+          , typename Tag
+          , typename Enable = void
+        >
         struct as
             : detail::backend<
                 typename traits::is_sequence<Target>::type,
@@ -35,17 +44,44 @@ namespace boost { namespace coerce {
     class bad_cast
         : public std::bad_cast { };
 
-    template <typename Target, typename Source>
+    template <typename Target, typename Source, typename Tag>
     inline Target
-    as(Source const & source) {
+    as(Source const & source, Tag const & tag) {
         Target target;
 
         bool result = traits::as<
-                Target, Source
-            >::call(target, source);
+                Target, Source, Tag
+            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(target, source);
 
         if (!result) {
             throw_exception(coerce::bad_cast());
+        }
+
+        return target;
+    }
+
+    template <typename Target, typename Source>
+    inline Target
+    as(Source const & source) {
+        return as<Target, Source, tag::none>(source, tag::none());
+    }
+
+    template <typename Target, typename Source, typename Tag>
+    inline typename disable_if<
+        is_same<Target, Tag>, Target>::type
+    as_default(
+        Source const & source,
+        Tag const & tag,
+        Target const & default_value = Target()
+    ) {
+        Target target;
+
+        bool result = traits::as<
+                Target, Source, Tag
+            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(target, source);
+
+        if (!result) {
+            return default_value;
         }
 
         return target;
@@ -57,17 +93,8 @@ namespace boost { namespace coerce {
         Source const & source,
         Target const & default_value = Target()
     ) {
-        Target target;
-
-        bool result = traits::as<
-                Target, Source
-            >::call(target, source);
-
-        if (!result) {
-            return default_value;
-        }
-
-        return target;
+        return as_default<Target, Source, tag::none>(
+            source, tag::none(), default_value);
     }
 
 } }  // namespace boost::coerce

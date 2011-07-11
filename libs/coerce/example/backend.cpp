@@ -5,13 +5,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/coerce.hpp>
+#include <boost/spirit/include/support_unused.hpp>
 
 #include <cerrno>  // for errno
 #include <cstdio>  // for std::strtol
 #include <iostream>
 
 struct strtol {
-    template <typename Target, typename Source>
+    template <typename Target, typename Source, typename Tag>
     static inline bool
     call(Target & target, Source const & source) {
         target = std::strtol(source, NULL, 10);
@@ -23,7 +24,7 @@ struct strtol {
 namespace boost { namespace coerce { namespace traits {
 
     template <std::size_t N>
-    struct as<long int, char [N]>
+    struct as<long int, char [N], spirit::unused_type>
         : strtol { };
 
 } } }  // namespace boost::coerce::traits
