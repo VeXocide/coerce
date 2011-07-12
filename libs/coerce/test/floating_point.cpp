@@ -26,12 +26,12 @@ struct source_test {
             coerce::as<std::string>(static_cast<T>(-23)), "-23.0");
 
         BOOST_CHECK_EQUAL(
-            coerce::as<std::string>(static_cast<T>(1.01828183L)), "1.01828183");
+            coerce::as<std::string>(static_cast<T>(1.0182818L)), "1.0182818");
 
         BOOST_CHECK_EQUAL(
-            coerce::as<std::string>(static_cast<T>(1.0e23L)), "1.0e23");
+            coerce::as<std::string>(static_cast<T>(1.0e18L)), "1.0e18");
         BOOST_CHECK_EQUAL(
-            coerce::as<std::string>(static_cast<T>(1.0e-23L)), "1.0e-23");
+            coerce::as<std::string>(static_cast<T>(1.0e-18L)), "1.0e-18");
 
         BOOST_CHECK_EQUAL(
             coerce::as<std::string>(std::numeric_limits<T>::quiet_NaN()),
@@ -75,25 +75,25 @@ struct target_test {
         BOOST_CHECK_EQUAL(coerce::as<T>("-23.0"), -23);
 
         BOOST_CHECK_CLOSE_FRACTION(
-            coerce::as<T>("1.01828183"),
-            static_cast<T>(1.01828183L),
+            coerce::as<T>("1.0182818"),
+            static_cast<T>(1.0182818L),
             std::numeric_limits<T>::epsilon());
 
         BOOST_CHECK_CLOSE_FRACTION(
-            coerce::as<T>("1.0e23"),
-            static_cast<T>(1.0e23L),
+            coerce::as<T>("1.0e18"),
+            static_cast<T>(1.0e18L),
             std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
-            coerce::as<T>("1.0E23"),
-            static_cast<T>(1.0e23L),
+            coerce::as<T>("1.0E18"),
+            static_cast<T>(1.0e18L),
             std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
-            coerce::as<T>("1.0e+23"),
-            static_cast<T>(1.0e23L),
+            coerce::as<T>("1.0e+18"),
+            static_cast<T>(1.0e18L),
             std::numeric_limits<T>::epsilon());
         BOOST_CHECK_CLOSE_FRACTION(
-            coerce::as<T>("1.0e-23"),
-            static_cast<T>(1.0e-23L),
+            coerce::as<T>("1.0e-18"),
+            static_cast<T>(1.0e-18L),
             std::numeric_limits<T>::epsilon());
 
         BOOST_CHECK_EQUAL(math::fpclassify(coerce::as<T>("NaN")), FP_NAN);

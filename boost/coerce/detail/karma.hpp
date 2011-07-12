@@ -11,6 +11,7 @@
 #pragma once
 #endif
 
+#include <boost/coerce/detail/precision.hpp>
 #include <boost/coerce/reserve.hpp>
 #include <boost/coerce/sequence.hpp>
 #include <boost/coerce/tag.hpp>
@@ -45,7 +46,7 @@ namespace boost { namespace coerce { namespace detail {
         : spirit::karma::real_policies<Source> {
         static inline unsigned
         precision(Source const &) {
-            return std::numeric_limits<Source>::digits10 + 1;
+            return detail::precision<Source>::value;
         }
     };
 
