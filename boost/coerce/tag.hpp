@@ -11,28 +11,26 @@
 #pragma once
 #endif
 
-#include <boost/mpl/if.hpp>
-#include <boost/spirit/home/karma/numeric.hpp>
-#include <boost/spirit/home/qi/numeric.hpp>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits/is_integral.hpp>
-#include <boost/type_traits/is_signed.hpp>
+#include <boost/coerce/detail/tag.hpp>
+
+#include <boost/proto/deep_copy.hpp>
+#include <boost/spirit/home/qi/directive/no_case.hpp>
+#include <boost/spirit/home/qi/operator/sequence.hpp>
+#include <boost/spirit/home/qi/operator/optional.hpp>
+#include <boost/spirit/home/qi/string/lit.hpp>
 
 namespace boost { namespace coerce { namespace tag {
 
     struct none { };
 
-    struct bin {
+    template <unsigned Radix>
+    struct base {
         template <typename Target>
         struct parser {
-            BOOST_STATIC_ASSERT(is_integral<Target>::value);
-
-            typedef typename mpl::if_<
-                is_signed<Target>,
-                spirit::qi::int_parser<Target, 2>,
-                spirit::qi::uint_parser<Target, 2>
+            typedef typename detail::integer_parser<
+                Target, Radix
             >::type type;
-                
+
             static inline type const
             call() {
                 return type();
@@ -41,17 +39,39 @@ namespace boost { namespace coerce { namespace tag {
 
         template <typename Source>
         struct generator {
-            BOOST_STATIC_ASSERT(is_integral<Source>::value);
-
-            typedef typename mpl::if_<
-                is_signed<Source>,
-                spirit::karma::int_generator<Source, 2>,
-                spirit::karma::uint_generator<Source, 2>
+            typedef typename detail::integer_generator<
+                Source, Radix
             >::type type;
 
             static inline type const
             call() {
                 return type();
+            }
+        };
+    };
+
+    struct bin
+        : base<2> { };
+
+    struct oct
+        : base<8> { };
+
+    struct hex
+        : base<16> {
+        template <typename Target>
+        struct parser {
+            typedef typename detail::integer_parser<
+                Target, 16
+            >::type parser_type;
+
+            typedef typename proto::result_of::deep_copy<
+                BOOST_TYPEOF_TPL((-spirit::standard::no_case_type()["0x"] >> parser_type()))
+            >::type type;
+
+            static inline type const
+            call() {
+                return proto::deep_copy(
+                    -spirit::standard::no_case_type()["0x"] >> parser_type());
             }
         };
     };
