@@ -6,6 +6,8 @@
 
 #define BOOST_TEST_MODULE floating_point
 
+#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+
 #include <boost/coerce.hpp>
 #include <boost/limits.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>

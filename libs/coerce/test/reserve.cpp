@@ -6,6 +6,8 @@
 
 #define BOOST_TEST_MODULE reserve
 
+#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+
 #include <boost/coerce.hpp>
 #include <boost/optional.hpp>
 #include <boost/test/unit_test.hpp>

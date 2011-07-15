@@ -6,6 +6,8 @@
 
 #define BOOST_TEST_MODULE wchar_t
 
+#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+
 #include <boost/coerce.hpp>
 #include <boost/config.hpp>
 #include <boost/test/unit_test.hpp>

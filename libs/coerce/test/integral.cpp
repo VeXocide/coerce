@@ -6,6 +6,8 @@
 
 #define BOOST_TEST_MODULE integral
 
+#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+
 #include <boost/coerce.hpp>
 #include <boost/limits.hpp>
 #include <boost/mpl/for_each.hpp>

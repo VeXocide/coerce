@@ -10,5 +10,4 @@ use-project /boost :
 
 build-project libs/coerce/example ;
 
-using testing ;
 build-project libs/coerce/test ;
