@@ -15,32 +15,17 @@
 #include <boost/coerce/string.hpp>
 #include <boost/coerce/tag.hpp>
 
-#include <boost/config.hpp>
-#include <boost/spirit/home/qi/auto.hpp>
 #include <boost/spirit/home/qi/char.hpp>
 #include <boost/spirit/home/qi/numeric.hpp>
 #include <boost/spirit/home/qi/operator/optional.hpp>
+#include <boost/spirit/home/qi/parse.hpp>
 
 namespace boost { namespace coerce { namespace detail {
-
-    template <typename Target, typename Tag>
-    struct create_parser {
-        typedef typename Tag::BOOST_NESTED_TEMPLATE parser<Target>::type type;
-
-        static inline type const
-        call() {
-            return Tag::BOOST_NESTED_TEMPLATE parser<Target>::call();
-        }
-    };
-
-    template <typename Target>
-    struct create_parser<Target, tag::none>
-        : spirit::traits::create_parser<Target> { };
 
     struct qi {
         template <typename Target, typename Source, typename Tag>
         static inline bool
-        call(Target & target, Source const & source) {
+        call(Target & target, Source const & source, Tag const & tag) {
             typedef traits::string<Source> string_traits;
 
             typename string_traits::size_type
@@ -52,7 +37,7 @@ namespace boost { namespace coerce { namespace detail {
 
             bool result = spirit::qi::parse(
                 iterator, string_traits::end(source),
-                create_parser<Target, Tag>::call(),
+                typename Tag::template parser<Target, Source>(tag),
                 target);
 
             if (static_cast<typename string_traits::size_type>(iterator - begin) != length) {

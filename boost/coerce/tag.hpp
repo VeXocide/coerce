@@ -11,42 +11,95 @@
 #pragma once
 #endif
 
-#include <boost/coerce/detail/tag.hpp>
+#include <boost/coerce/precision.hpp>
 
-#include <boost/proto/deep_copy.hpp>
-#include <boost/spirit/home/qi/directive/no_case.hpp>
-#include <boost/spirit/home/qi/operator/sequence.hpp>
-#include <boost/spirit/home/qi/operator/optional.hpp>
-#include <boost/spirit/home/qi/string/lit.hpp>
+#include <boost/spirit/home/karma/auto.hpp>
+#include <boost/spirit/home/karma/numeric.hpp>
+#include <boost/spirit/home/qi/auto.hpp>
+#include <boost/spirit/home/qi/numeric/int.hpp>
+#include <boost/spirit/home/qi/numeric/uint.hpp>
+#include <boost/type_traits/is_signed.hpp>
+#include <boost/type_traits/remove_const.hpp>
 
 namespace boost { namespace coerce { namespace tag {
 
-    struct none { };
+    struct none {
+        template <typename Target, typename Source>
+        struct parser
+            : spirit::traits::create_parser<Target>::type {
+            parser(tag::none const &) { }
+        };
 
-    template <unsigned Radix>
-    struct base {
-        template <typename Target>
-        struct parser {
-            typedef typename detail::integer_parser<
-                Target, Radix
-            >::type type;
-
-            static inline type const
-            call() {
-                return type();
-            }
+        template <typename Target, typename Source>
+        struct generator
+            : spirit::traits::create_generator<Source>::type {
+            generator(tag::none const &) { }
         };
 
         template <typename Source>
-        struct generator {
-            typedef typename detail::integer_generator<
-                Source, Radix
-            >::type type;
-
-            static inline type const
-            call() {
-                return type();
+        struct real_policies
+            : spirit::karma::real_policies<
+                typename remove_const<Source>::type
+            > {
+            static inline unsigned
+            precision(Source const &) {
+                return traits::precision<Source>::value;
             }
+        };
+
+        template <typename Target, typename Source>
+        struct generator_floating_point
+            : spirit::karma::real_generator<Source, real_policies<Source> > { };
+
+        template <typename Target>
+        struct generator<Target, float>
+            : generator_floating_point<Target, float> {
+            generator(tag::none const &) { }
+        };
+
+        template <typename Target>
+        struct generator<Target, double>
+            : generator_floating_point<Target, double> {
+            generator(tag::none const &) { }
+        };
+
+        template <typename Target>
+        struct generator<Target, long double>
+            : generator_floating_point<Target, long double> {
+            generator(tag::none const &) { }
+        };
+    };
+
+    template <unsigned Radix>
+    struct base {
+        template <typename Target, typename Source, bool U = is_signed<Target>::value>
+        struct parser;
+
+        template <typename Target, typename Source>
+        struct parser<Target, Source, true>
+            : spirit::qi::int_parser<Target, Radix> {
+            parser(tag::base<Radix> const &) { }
+        };
+
+        template <typename Target, typename Source>
+        struct parser<Target, Source, false>
+            : spirit::qi::uint_parser<Target, Radix> {
+            parser(tag::base<Radix> const &) { }
+        };
+
+        template <typename Target, typename Source, bool U = is_signed<Target>::value>
+        struct generator;
+
+        template <typename Target, typename Source>
+        struct generator<Target, Source, true>
+            : spirit::karma::int_generator<Source, Radix> {
+            generator(tag::base<Radix> const &) { }
+        };
+
+        template <typename Target, typename Source>
+        struct generator<Target, Source, false>
+            : spirit::karma::uint_generator<Source, Radix> {
+            generator(tag::base<Radix> const &) { }
         };
     };
 
@@ -57,24 +110,7 @@ namespace boost { namespace coerce { namespace tag {
         : base<8> { };
 
     struct hex
-        : base<16> {
-        template <typename Target>
-        struct parser {
-            typedef typename detail::integer_parser<
-                Target, 16
-            >::type parser_type;
-
-            typedef typename proto::result_of::deep_copy<
-                BOOST_TYPEOF_TPL((-spirit::standard::no_case_type()["0x"] >> parser_type()))
-            >::type type;
-
-            static inline type const
-            call() {
-                return proto::deep_copy(
-                    -spirit::standard::no_case_type()["0x"] >> parser_type());
-            }
-        };
-    };
+        : base<16> { };
 
 } } }  // namespace boost::coerce::tag
 

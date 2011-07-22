@@ -4,8 +4,8 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_DETAIL_PRECISION_HPP
-#define BOOST_COERCE_DETAIL_PRECISION_HPP
+#ifndef BOOST_COERCE_PRECISION_HPP
+#define BOOST_COERCE_PRECISION_HPP
 
 #ifdef _MSC_VER
 #pragma once
@@ -14,7 +14,7 @@
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
 
-namespace boost { namespace coerce { namespace detail {
+namespace boost { namespace coerce { namespace traits {
 
     template <typename T>
     struct precision {
@@ -40,6 +40,6 @@ namespace boost { namespace coerce { namespace detail {
                 : is_specialized_decimal ? precision_decimal : 6);
     };
 
-} } }  // namespace boost::coerce::detail
+} } }  // namespace boost::coerce::traits
 
-#endif  // BOOST_COERCE_DETAIL_PRECISION_HPP
+#endif  // BOOST_COERCE_PRECISION_HPP

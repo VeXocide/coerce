@@ -51,7 +51,8 @@ namespace boost { namespace coerce {
 
         bool result = traits::as<
                 Target, Source, Tag
-            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(target, source);
+            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(
+                target, source, tag);
 
         if (!result) {
             throw_exception(coerce::bad_cast());
@@ -78,7 +79,8 @@ namespace boost { namespace coerce {
 
         bool result = traits::as<
                 Target, Source, Tag
-            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(target, source);
+            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(
+                target, source, tag);
 
         if (!result) {
             return default_value;

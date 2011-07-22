@@ -27,10 +27,10 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T>
     struct sequence_impl_std {
-        typedef T type;
+        typedef std::back_insert_iterator<T> type;
 
-        static inline std::back_insert_iterator<type>
-        back_inserter(type & value) {
+        static inline type
+        back_inserter(T & value) {
             return std::back_inserter(value);
         }
     };
