@@ -7,8 +7,8 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 
 #include <boost/coerce.hpp>
-#include <boost/spirit/include/support_unused.hpp>
 
+#include <cctype>  // for std::isspace
 #include <cerrno>  // for errno
 #include <cstdio>  // for std::strtol
 #include <iostream>
@@ -16,17 +16,28 @@
 struct strtol {
     template <typename Target, typename Source, typename Tag>
     static inline bool
-    call(Target & target, Source const & source) {
-        target = std::strtol(source, NULL, 10);
+    call(Target & target, Source const & source, Tag const &) {
+        char *end;
+        
+        if (std::isspace(*source)) {
+            return false;
+        }
 
-        return (errno != EINVAL);
+        errno = 0;
+        target = std::strtol(source, &end, 10);
+
+        if (errno != 0 || *end != 0 || source == end) {
+            return false;
+        }
+
+        return true;
     }
 };
 
 namespace boost { namespace coerce { namespace traits {
 
     template <std::size_t N>
-    struct as<long int, char [N], spirit::unused_type>
+    struct as<long int, char [N], tag::none>
         : strtol { };
 
 } } }  // namespace boost::coerce::traits
