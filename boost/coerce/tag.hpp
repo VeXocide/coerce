@@ -16,8 +16,15 @@
 #include <boost/spirit/home/karma/auto.hpp>
 #include <boost/spirit/home/karma/numeric.hpp>
 #include <boost/spirit/home/qi/auto.hpp>
+#include <boost/spirit/home/qi/directive/no_case.hpp>
+#include <boost/spirit/home/qi/domain.hpp>
 #include <boost/spirit/home/qi/numeric/int.hpp>
 #include <boost/spirit/home/qi/numeric/uint.hpp>
+#include <boost/spirit/home/qi/operator/optional.hpp>
+#include <boost/spirit/home/qi/operator/sequence.hpp>
+#include <boost/spirit/home/qi/parser.hpp>
+#include <boost/spirit/home/qi/string/lit.hpp>
+#include <boost/spirit/home/support/meta_compiler.hpp>
 #include <boost/type_traits/is_signed.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
@@ -72,33 +79,37 @@ namespace boost { namespace coerce { namespace tag {
 
     template <unsigned Radix>
     struct base {
-        template <typename Target, typename Source, bool U = is_signed<Target>::value>
-        struct parser;
+        template <typename Target, bool U = is_signed<Target>::value>
+        struct parser_base;
+
+        template <typename Target>
+        struct parser_base<Target, true>
+            : spirit::qi::int_parser<Target, Radix> { };
+
+        template <typename Target>
+        struct parser_base<Target, false>
+            : spirit::qi::uint_parser<Target, Radix> { };
 
         template <typename Target, typename Source>
-        struct parser<Target, Source, true>
-            : spirit::qi::int_parser<Target, Radix> {
+        struct parser
+            : parser_base<Target> {
             parser(tag::base<Radix> const &) { }
         };
 
-        template <typename Target, typename Source>
-        struct parser<Target, Source, false>
-            : spirit::qi::uint_parser<Target, Radix> {
-            parser(tag::base<Radix> const &) { }
-        };
+        template <typename Source, bool U = is_signed<Source>::value>
+        struct generator_base;
 
-        template <typename Target, typename Source, bool U = is_signed<Target>::value>
-        struct generator;
+        template <typename Source>
+        struct generator_base<Source, true>
+            : spirit::karma::int_generator<Source, Radix> { };
 
+        template <typename Source>
+        struct generator_base<Source, false>
+            : spirit::karma::uint_generator<Source, Radix> { };
+    
         template <typename Target, typename Source>
-        struct generator<Target, Source, true>
-            : spirit::karma::int_generator<Source, Radix> {
-            generator(tag::base<Radix> const &) { }
-        };
-
-        template <typename Target, typename Source>
-        struct generator<Target, Source, false>
-            : spirit::karma::uint_generator<Source, Radix> {
+        struct generator
+            : generator_base<Source> {
             generator(tag::base<Radix> const &) { }
         };
     };
@@ -110,7 +121,32 @@ namespace boost { namespace coerce { namespace tag {
         : base<8> { };
 
     struct hex
-        : base<16> { };
+        : base<16> {
+        template <typename Target, typename Source>
+        struct parser
+            : spirit::qi::parser<parser<Target, Source> > {
+            parser(tag::hex const &) { }
+
+            template <typename Context, typename Iterator>
+            struct attribute {
+                typedef Target type;
+            };
+            
+            template <typename Iterator, typename Context, typename Skipper>
+            inline bool
+            parse(
+                Iterator & first,
+                Iterator const & last,
+                Context & context,
+                Skipper const & skipper,
+                Target & target
+            ) const {
+                return spirit::compile<spirit::qi::domain>(
+                    -spirit::standard::no_case_type()["0x"] >> parser_base<Target>()
+                ).parse(first, last, context, skipper, target);
+            }
+        };
+    };
 
 } } }  // namespace boost::coerce::tag
 
