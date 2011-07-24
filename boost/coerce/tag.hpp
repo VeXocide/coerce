@@ -13,6 +13,7 @@
 
 #include <boost/coerce/precision.hpp>
 
+#include <boost/config.hpp>
 #include <boost/spirit/home/karma/auto.hpp>
 #include <boost/spirit/home/karma/numeric.hpp>
 #include <boost/spirit/home/qi/auto.hpp>
@@ -79,8 +80,15 @@ namespace boost { namespace coerce { namespace tag {
 
     template <unsigned Radix>
     struct base {
+#ifdef BOOST_MSVC
+#pragma warning(push)
+#pragma warning(disable: 4348)  // redefinition of default parameter : parameter 2
+#endif
         template <typename Target, bool U = is_signed<Target>::value>
         struct parser_base;
+#ifdef BOOST_MSVC
+#pragma warning(pop)
+#endif
 
         template <typename Target>
         struct parser_base<Target, true>
@@ -96,8 +104,15 @@ namespace boost { namespace coerce { namespace tag {
             parser(tag::base<Radix> const &) { }
         };
 
+#ifdef BOOST_MSVC
+#pragma warning(push)
+#pragma warning(disable: 4348)  // redefinition of default parameter : parameter 2
+#endif
         template <typename Source, bool U = is_signed<Source>::value>
         struct generator_base;
+#ifdef BOOST_MSVC
+#pragma warning(pop)
+#endif
 
         template <typename Source>
         struct generator_base<Source, true>
