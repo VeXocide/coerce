@@ -27,7 +27,7 @@ namespace boost { namespace coerce { namespace detail {
         static inline bool
         call(Target & target, Source const & source, Tag const & tag) {
             detail::call_reserve(
-                target, traits::reserve_size<Source>::call(source));
+                target, traits::reserve_size<Source, Tag>::call(source, tag));
 
             typename traits::sequence<Target>::type iterator =
                 traits::sequence<Target>::back_inserter(target);

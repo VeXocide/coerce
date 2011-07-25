@@ -12,8 +12,11 @@
 #endif
 
 #include <boost/coerce/detail/reserve.hpp>
+#include <boost/coerce/precision.hpp>
+#include <boost/coerce/tag.hpp>
 
 #include <boost/config.hpp>
+#include <boost/integer/static_log2.hpp>
 #include <boost/limits.hpp>
 #include <boost/optional.hpp>
 
@@ -21,101 +24,139 @@
 
 namespace boost { namespace coerce { namespace traits {
 
-    template <typename T>
+    template <typename T, typename Tag>
     struct reserve_size_impl {
         BOOST_STATIC_CONSTANT(std::size_t, value = 0);
     };
 
     template <>
-    struct reserve_size_impl<char> {
+    struct reserve_size_impl<char, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
     template <>
-    struct reserve_size_impl<wchar_t> {
+    struct reserve_size_impl<wchar_t, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
-    template <typename T>
+    template <typename T, typename Tag>
     struct reserve_size_impl_integral {
+        BOOST_STATIC_CONSTANT(std::size_t, value = 0);
+    };
+
+    template <typename T>
+    struct reserve_size_impl_integral<T, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value =
             std::numeric_limits<T>::is_signed +
             1 +
             std::numeric_limits<T>::digits10);
     };
 
-    template <>
-    struct reserve_size_impl<int>
-        : reserve_size_impl_integral<int> { };
+    template <typename T, unsigned Radix>
+    struct reserve_size_impl_integral<T, tag::base<Radix> > {
+        BOOST_STATIC_CONSTANT(std::size_t, value =
+        1 +
+        std::numeric_limits<T>::digits / static_log2<Radix>::value);
+    };
 
-    template <>
-    struct reserve_size_impl<short>
-        : reserve_size_impl_integral<short> { };
+    template <typename T>
+    struct reserve_size_impl_integral<T, tag::bin> {
+        BOOST_STATIC_CONSTANT(std::size_t, value =
+            1 +
+            std::numeric_limits<T>::digits);
+    };
 
-    template <>
-    struct reserve_size_impl<long>
-        : reserve_size_impl_integral<long> { };
+    template <typename T>
+    struct reserve_size_impl_integral<T, tag::oct> {
+        BOOST_STATIC_CONSTANT(std::size_t, value =
+            1 +
+            std::numeric_limits<T>::digits / 3);
+    };
 
-    template <>
-    struct reserve_size_impl<unsigned int>
-        : reserve_size_impl_integral<unsigned int> { };
+    template <typename T>
+    struct reserve_size_impl_integral<T, tag::hex> {
+        BOOST_STATIC_CONSTANT(std::size_t, value =
+            1 +
+            std::numeric_limits<T>::digits / 4);
+    };
 
-    template <>
-    struct reserve_size_impl<unsigned short>
-        : reserve_size_impl_integral<unsigned short> { };
+    template <typename Tag>
+    struct reserve_size_impl<int, Tag>
+        : reserve_size_impl_integral<int, Tag> { };
 
-    template <>
-    struct reserve_size_impl<unsigned long>
-        : reserve_size_impl_integral<unsigned long> { };
+    template <typename Tag>
+    struct reserve_size_impl<short, Tag>
+        : reserve_size_impl_integral<short, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<long, Tag>
+        : reserve_size_impl_integral<long, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<unsigned int, Tag>
+        : reserve_size_impl_integral<unsigned int, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<unsigned short, Tag>
+        : reserve_size_impl_integral<unsigned short, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<unsigned long, Tag>
+        : reserve_size_impl_integral<unsigned long, Tag> { };
 
 #ifdef BOOST_HAS_LONG_LONG
 
-    template <>
-    struct reserve_size_impl<boost::long_long_type>
-        : reserve_size_impl_integral<boost::long_long_type> { };
+    template <typename Tag>
+    struct reserve_size_impl<boost::long_long_type, Tag>
+        : reserve_size_impl_integral<boost::long_long_type, Tag> { };
 
-    template <>
-    struct reserve_size_impl<boost::ulong_long_type>
-        : reserve_size_impl_integral<boost::ulong_long_type> { };
+    template <typename Tag>
+    struct reserve_size_impl<boost::ulong_long_type, Tag>
+        : reserve_size_impl_integral<boost::ulong_long_type, Tag> { };
 
 #endif  // BOOST_HAS_LONG_LONG
 
-    template <typename T>
+    template <typename T, typename Tag>
     struct reserve_size_impl_floating_point {
+        BOOST_STATIC_CONSTANT(std::size_t, value = 0);
+    };
+
+    template <typename T>
+    struct reserve_size_impl_floating_point<T, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value =
             std::numeric_limits<T>::is_signed +
             8 +
-            std::numeric_limits<T>::digits10);
+            precision<T>::value);
     };
 
-    template <>
-    struct reserve_size_impl<float>
-        : reserve_size_impl_floating_point<float> { };
+    template <typename Tag>
+    struct reserve_size_impl<float, Tag>
+        : reserve_size_impl_floating_point<float, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<double, Tag>
+        : reserve_size_impl_floating_point<double, Tag> { };
+
+    template <typename Tag>
+    struct reserve_size_impl<long double, Tag>
+        : reserve_size_impl_floating_point<long double, Tag> { };
 
     template <>
-    struct reserve_size_impl<double>
-        : reserve_size_impl_floating_point<double> { };
-
-    template <>
-    struct reserve_size_impl<long double>
-        : reserve_size_impl_floating_point<long double> { };
-
-    template <>
-    struct reserve_size_impl<bool> {
+    struct reserve_size_impl<bool, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 5);
     };
 
-    template <typename T>
-    struct reserve_size_impl<boost::optional<T> >
-        : reserve_size_impl<T> { };
+    template <typename T, typename Tag>
+    struct reserve_size_impl<boost::optional<T>, Tag>
+        : reserve_size_impl<T, Tag> { };
 
-    template <typename T, typename Enable = void>
+    template <typename T, typename Tag, typename Enable = void>
     struct reserve_size {
         typedef std::size_t type;
 
         static inline type
-        call(T const &) {
-            return reserve_size_impl<T>::value;
+        call(T const &, Tag const &) {
+            return reserve_size_impl<T, Tag>::value;
         }
     };
 
