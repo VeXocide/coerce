@@ -32,13 +32,13 @@
 namespace boost { namespace coerce { namespace tag {
 
     struct none {
-        template <typename Target, typename Source>
+        template <typename Iterator, typename Target, typename Source>
         struct parser
             : spirit::traits::create_parser<Target>::type {
             parser(tag::none const &) { }
         };
 
-        template <typename Target, typename Source>
+        template <typename Iterator, typename Target, typename Source>
         struct generator
             : spirit::traits::create_generator<Source>::type {
             generator(tag::none const &) { }
@@ -55,25 +55,25 @@ namespace boost { namespace coerce { namespace tag {
             }
         };
 
-        template <typename Target, typename Source>
+        template <typename Source>
         struct generator_floating_point
             : spirit::karma::real_generator<Source, real_policies<Source> > { };
 
-        template <typename Target>
-        struct generator<Target, float>
-            : generator_floating_point<Target, float> {
+        template <typename Iterator, typename Target>
+        struct generator<Iterator, Target, float>
+            : generator_floating_point<float> {
             generator(tag::none const &) { }
         };
 
-        template <typename Target>
-        struct generator<Target, double>
-            : generator_floating_point<Target, double> {
+        template <typename Iterator, typename Target>
+        struct generator<Iterator, Target, double>
+            : generator_floating_point<double> {
             generator(tag::none const &) { }
         };
 
-        template <typename Target>
-        struct generator<Target, long double>
-            : generator_floating_point<Target, long double> {
+        template <typename Iterator, typename Target>
+        struct generator<Iterator, Target, long double>
+            : generator_floating_point<long double> {
             generator(tag::none const &) { }
         };
     };
@@ -98,7 +98,7 @@ namespace boost { namespace coerce { namespace tag {
         struct parser_base<Target, false>
             : spirit::qi::uint_parser<Target, Radix> { };
 
-        template <typename Target, typename Source>
+        template <typename Iterator, typename Target, typename Source>
         struct parser
             : parser_base<Target> {
             parser(tag::base<Radix> const &) { }
@@ -122,7 +122,7 @@ namespace boost { namespace coerce { namespace tag {
         struct generator_base<Source, false>
             : spirit::karma::uint_generator<Source, Radix> { };
     
-        template <typename Target, typename Source>
+        template <typename Iterator, typename Target, typename Source>
         struct generator
             : generator_base<Source> {
             generator(tag::base<Radix> const &) { }
@@ -137,17 +137,17 @@ namespace boost { namespace coerce { namespace tag {
 
     struct hex
         : base<16> {
-        template <typename Target, typename Source>
+        template <typename Iterator, typename Target, typename Source>
         struct parser
-            : spirit::qi::parser<parser<Target, Source> > {
+            : spirit::qi::parser<parser<Iterator, Target, Source> > {
             parser(tag::hex const &) { }
 
-            template <typename Context, typename Iterator>
+            template <typename Context, typename Iterator_>
             struct attribute {
                 typedef Target type;
             };
             
-            template <typename Iterator, typename Context, typename Skipper>
+            template <typename Context, typename Skipper>
             inline bool
             parse(
                 Iterator & first,
