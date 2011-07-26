@@ -35,10 +35,12 @@ namespace boost { namespace coerce { namespace detail {
             typename string_traits::const_iterator
                 begin = string_traits::begin(source), iterator = begin;
 
+            typename Tag::template parser<
+                typename string_traits::const_iterator, Target, Source
+            > parser(tag);
+
             bool result = spirit::qi::parse(
-                iterator, string_traits::end(source),
-                typename Tag::template parser<Target, Source>(tag),
-                target);
+                iterator, string_traits::end(source), parser, target);
 
             if (static_cast<typename string_traits::size_type>(iterator - begin) != length) {
                 return false;

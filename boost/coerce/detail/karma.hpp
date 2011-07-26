@@ -32,10 +32,12 @@ namespace boost { namespace coerce { namespace detail {
             typename traits::sequence<Target>::type iterator =
                 traits::sequence<Target>::back_inserter(target);
 
+            typename Tag::template generator<
+                typename traits::sequence<Target>::type, Target, Source
+            > generator(tag);
+
             bool result = spirit::karma::generate(
-                iterator,
-                typename Tag::template generator<Target, Source>(tag),
-                source);
+                iterator, generator, source);
 
             return result; 
         }
