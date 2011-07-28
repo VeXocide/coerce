@@ -33,6 +33,9 @@ unit-test karma :
 unit-test reserve :
     reserve.cpp ;
 
+unit-test tag :
+    tag.cpp ;
+
 unit-test qi :
     qi.cpp ;
 

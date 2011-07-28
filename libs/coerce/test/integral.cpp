@@ -14,6 +14,8 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <string>
+
 struct source_test {
     template <typename T>
     void

@@ -16,6 +16,8 @@
 #include <boost/test/floating_point_comparison.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <string>
+
 struct source_test {
     template <typename T>
     void
