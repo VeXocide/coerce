@@ -16,5 +16,17 @@ exe backend :
 exe coerce :
     coerce.cpp ;
 
+exe grammar :
+    grammar.cpp ;
+
+exe interface :
+    interface.cpp ;
+
 exe optional :
     optional.cpp ;
+
+exe "rule" :
+    rule.cpp ;
+
+exe tag :
+    tag.cpp ;
