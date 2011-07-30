@@ -4,19 +4,18 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-
 #include <boost/coerce.hpp>
-#include <boost/spirit/include/karma_uint.hpp>
 #include <boost/spirit/include/karma_sequence.hpp>
 #include <boost/spirit/include/karma_string.hpp>
 #include <boost/spirit/include/karma_rule.hpp>
+#include <boost/spirit/include/karma_uint.hpp>
 #include <boost/spirit/include/qi_lit.hpp>
-#include <boost/spirit/include/qi_uint.hpp>
-#include <boost/spirit/include/qi_sequence.hpp>
 #include <boost/spirit/include/qi_rule.hpp>
+#include <boost/spirit/include/qi_sequence.hpp>
+#include <boost/spirit/include/qi_uint.hpp>
 
 #include <iostream>
+#include <limits>
 #include <string>
 
 namespace tag {
@@ -28,8 +27,13 @@ namespace tag {
             : spirit::qi::rule<Iterator, Target()> {
             parser(tag::hexadecimal const &)
                 : spirit::qi::rule<Iterator, Target()>(
+#ifndef BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+                        spirit::qi::lit("0x")
+                    >>  spirit::qi::hex
+#else
                         spirit::qi::lit_type()("0x")
                     >>  spirit::qi::hex_type()
+#endif
                 ) { }
         };
 
@@ -38,8 +42,13 @@ namespace tag {
             : spirit::karma::rule<Iterator, Source()> {
             generator(tag::hexadecimal const &)
                 : spirit::karma::rule<Iterator, Source()>(
+#ifndef BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+                        spirit::karma::lit("0x")
+                    <<  spirit::karma::hex
+#else
                         spirit::karma::lit_type()("0x")
                     <<  spirit::karma::hex_type()
+#endif
                 ) { }
         };
     };
@@ -54,7 +63,7 @@ namespace boost { namespace coerce { namespace traits {
 
         static inline type
         call(T const &, ::tag::hexadecimal const &) {
-            return 2 + 8;
+            return 2 + std::numeric_limits<unsigned int>::digits / 4;
         }
     };
 
