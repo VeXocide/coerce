@@ -34,6 +34,7 @@ namespace boost { namespace coerce { namespace detail {
     public:
         BOOST_STATIC_CONSTANT(bool, value =
             sizeof(test<Sequence>(0)) == sizeof(type_traits::yes_type));
+
         typedef mpl::bool_<value> type;
     };
 

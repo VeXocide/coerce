@@ -11,8 +11,8 @@
 #pragma once
 #endif
 
+#include <boost/coerce/detail/precision.hpp>
 #include <boost/coerce/detail/reserve.hpp>
-#include <boost/coerce/precision.hpp>
 #include <boost/coerce/tag.hpp>
 
 #include <boost/config.hpp>
@@ -29,23 +29,18 @@ namespace boost { namespace coerce { namespace traits {
         BOOST_STATIC_CONSTANT(std::size_t, value = 0);
     };
 
-    template <>
-    struct reserve_size_impl<char, tag::none> {
+    template <typename Tag>
+    struct reserve_size_impl<char, Tag> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
-    template <>
-    struct reserve_size_impl<wchar_t, tag::none> {
+    template <typename Tag>
+    struct reserve_size_impl<wchar_t, Tag> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
     template <typename T, typename Tag>
     struct reserve_size_impl_integral {
-        BOOST_STATIC_CONSTANT(std::size_t, value = 0);
-    };
-
-    template <typename T>
-    struct reserve_size_impl_integral<T, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value =
             std::numeric_limits<T>::is_signed +
             1 +
@@ -118,15 +113,10 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T, typename Tag>
     struct reserve_size_impl_floating_point {
-        BOOST_STATIC_CONSTANT(std::size_t, value = 0);
-    };
-
-    template <typename T>
-    struct reserve_size_impl_floating_point<T, tag::none> {
         BOOST_STATIC_CONSTANT(std::size_t, value =
             std::numeric_limits<T>::is_signed +
             8 +
-            precision<T>::value);
+            detail::precision<T>::value);
     };
 
     template <typename Tag>
@@ -141,8 +131,8 @@ namespace boost { namespace coerce { namespace traits {
     struct reserve_size_impl<long double, Tag>
         : reserve_size_impl_floating_point<long double, Tag> { };
 
-    template <>
-    struct reserve_size_impl<bool, tag::none> {
+    template <typename Tag>
+    struct reserve_size_impl<bool, Tag> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 5);
     };
 
@@ -152,9 +142,7 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T, typename Tag, typename Enable = void>
     struct reserve_size {
-        typedef std::size_t type;
-
-        static inline type
+        static inline std::size_t
         call(T const &, Tag const &) {
             return reserve_size_impl<T, Tag>::value;
         }

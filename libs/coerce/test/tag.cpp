@@ -9,6 +9,7 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 
 #include <boost/coerce.hpp>
+#include <boost/coerce/tag/base.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/test/unit_test.hpp>

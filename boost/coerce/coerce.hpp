@@ -16,7 +16,6 @@
 #include <boost/coerce/string.hpp>
 #include <boost/coerce/tag.hpp>
 
-#include <boost/config.hpp>
 #include <boost/throw_exception.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -51,7 +50,7 @@ namespace boost { namespace coerce {
 
         bool result = traits::as<
                 Target, Source, Tag
-            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(
+            >::template call<Target, Source, Tag>(
                 target, source, tag);
 
         if (!result) {
@@ -79,7 +78,7 @@ namespace boost { namespace coerce {
 
         bool result = traits::as<
                 Target, Source, Tag
-            >::BOOST_NESTED_TEMPLATE call<Target, Source, Tag>(
+            >::template call<Target, Source, Tag>(
                 target, source, tag);
 
         if (!result) {

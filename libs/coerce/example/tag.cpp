@@ -7,6 +7,7 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 
 #include <boost/coerce.hpp>
+#include <boost/coerce/tag/base.hpp>
 
 #include <iostream>
 #include <string>
