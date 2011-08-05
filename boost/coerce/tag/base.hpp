@@ -94,7 +94,9 @@ namespace boost { namespace coerce { namespace tag {
         template <typename Iterator, typename Target, typename Source>
         struct parser
             : spirit::qi::parser<parser<Iterator, Target, Source> > {
-            parser(tag::hex const &) { }
+            parser(tag::hex const &) {
+                BOOST_STATIC_ASSERT(is_integral<Target>::value);
+            }
 
             template <typename Context, typename Iterator_>
             struct attribute {
@@ -110,8 +112,6 @@ namespace boost { namespace coerce { namespace tag {
                 Skipper const & skipper,
                 Target & target
             ) const {
-                BOOST_STATIC_ASSERT(is_integral<Target>::value);
-
                 return spirit::compile<spirit::qi::domain>(
                     -spirit::standard::no_case_type()["0x"] >> parser_base<Target>()
                 ).parse(first, last, context, skipper, target);
