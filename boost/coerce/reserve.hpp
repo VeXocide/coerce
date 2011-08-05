@@ -142,7 +142,9 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T, typename Tag, typename Enable = void>
     struct reserve_size {
-        static inline std::size_t
+        typedef std::size_t type;
+        
+        static inline type
         call(T const &, Tag const &) {
             return reserve_size_impl<T, Tag>::value;
         }
