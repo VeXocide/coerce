@@ -12,12 +12,12 @@
 #endif
 
 #include <boost/coerce/detail/backend.hpp>
+#include <boost/coerce/detail/tag.hpp>
 #include <boost/coerce/sequence.hpp>
 #include <boost/coerce/string.hpp>
 #include <boost/coerce/tag.hpp>
 
 #include <boost/throw_exception.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
 
 #include <typeinfo>  // for std::bad_cast
@@ -67,8 +67,8 @@ namespace boost { namespace coerce {
     }
 
     template <typename Target, typename Source, typename Tag>
-    inline typename disable_if<
-        is_same<Target, Tag>, Target>::type
+    inline typename enable_if<
+        detail::is_tag<Tag>, Target>::type
     as_default(
         Source const & source,
         Tag const & tag,
