@@ -20,75 +20,54 @@
 namespace boost { namespace coerce { namespace traits {
 
     template <typename T>
-    struct string_impl
-        : mpl::identity<void> { };
-
-    template <typename T, typename U = typename is_char<T>::type>
-    struct string_impl_pointer
-        : mpl::identity<void> { };
+    struct string_traits_impl;
 
     template <typename T>
-    struct string_impl_pointer<T, mpl::true_> {
-        typedef T * type;
-
-        typedef T const *const_iterator;
+    struct string_traits_impl<T *> {
+        typedef T const * const_iterator;
         typedef std::size_t size_type;
 
         static inline const_iterator
-        begin(type const value) {
+        begin(T * const value) {
             return value;
         }
 
         static inline const_iterator
-        end(type const value) {
+        end(T * const value) {
             return value + length(value) + 1;
         }
 
         static inline size_type
-        length(type const value) {
+        length(T * const value) {
             return std::char_traits<
                     typename remove_const<T>::type
                 >::length(value);
         }
     };
 
-    template <typename T>
-    struct string_impl<T *>
-        : string_impl_pointer<T> { };
-
-    template <typename T, std::size_t N, typename U = typename is_char<T>::type>
-    struct string_impl_extent
-        : mpl::identity<void> { };
-
     template <typename T, std::size_t N>
-    struct string_impl_extent<T, N, mpl::true_> {
-        typedef T type[N];
-
-        typedef T const *const_iterator;
+    struct string_traits_impl<T [N]> {
+        typedef T const * const_iterator;
         typedef std::size_t size_type;
 
         static inline const_iterator
-        begin(type const & value) {
+        begin(T const(& value)[N]) {
             return &value[0];
         }
 
         static inline const_iterator
-        end(type const & value) {
+        end(T const(& value)[N]) {
             return &value[0] + length(value);
         }
 
         static inline size_type
-        length(type const & value) {
+        length(T const(& value)[N]) {
             return value[N - 1] == 0 ? N - 1 : N;
         }
     };
 
-    template <typename T, std::size_t N>
-    struct string_impl<T [N]>
-        : string_impl_extent<T, N> { };
-
     template <typename T, typename Traits, typename Allocator>
-    struct string_impl<std::basic_string<T, Traits, Allocator> > {
+    struct string_traits_impl<std::basic_string<T, Traits, Allocator> > {
         typedef std::basic_string<T, Traits, Allocator> type;
 
         typedef typename type::const_iterator const_iterator;
@@ -111,12 +90,28 @@ namespace boost { namespace coerce { namespace traits {
     };
 
     template <typename T, typename Enable = void>
-    struct string
-        : string_impl<T> { };
+    struct string_traits
+        : string_traits_impl<T> { };
 
     template <typename T>
+    struct is_string_impl
+        : mpl::identity<mpl::false_> { };
+
+    template <typename T>
+    struct is_string_impl<T *>
+        : traits::is_char<T> { };
+
+    template <typename T, std::size_t N>
+    struct is_string_impl<T [N]>
+        : traits::is_char<T> { };
+
+    template <typename T, typename Traits, typename Allocator>
+    struct is_string_impl<std::basic_string<T, Traits, Allocator> >
+        : traits::is_char<T> { };
+
+    template <typename T, typename Enable = void>
     struct is_string
-        : mpl::not_<is_same<typename string<T>::type, void> > { };
+        : is_string_impl<T> { };
 
 } } }  // namespace boost::coerce::traits
 

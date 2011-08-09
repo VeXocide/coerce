@@ -26,7 +26,7 @@ namespace boost { namespace coerce { namespace detail {
         template <typename Target, typename Source, typename Tag>
         static inline bool
         call(Target & target, Source const & source, Tag const & tag) {
-            typedef traits::string<Source> string_traits;
+            typedef traits::string_traits<Source> string_traits;
 
             typename string_traits::size_type
                 length = string_traits::length(source);
