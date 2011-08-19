@@ -1,0 +1,49 @@
+#              Copyright Jeroen Habraken 2011.
+#
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file ../../../LICENSE_1_0.txt or copy at
+#          http://www.boost.org/LICENSE_1_0.txt)
+
+import os ;
+
+using boostbook :
+    /opt/local/share/xsl/docbook-xsl/ :
+    /opt/local/share/xml/docbook/4.2/ ;
+
+local boost-root = [ os.environ BOOST_ROOT ] ;
+using quickbook :
+    $(boost-root)/dist/bin/quickbook ;
+
+xml coerce :
+    coerce.qbk ;
+
+boostbook standalone :
+    coerce :
+        <xsl:param>html.stylesheet=boostbook.css
+        <xsl:param>navig.graphics=1
+        
+        <xsl:param>chunk.first.sections=1
+        <xsl:param>chunk.section.depth=2
+        # <xsl:param>generate.section.toc.level=4
+        # <xsl:param>toc.max.depth=3
+        # <xsl:param>toc.section.depth=3
+
+        <dependency>css
+        <dependency>png
+        <dependency>svg
+    ;
+
+install css :
+    $(boost-root)/doc/src/boostbook.css :
+        <location>html
+    ;
+
+install png :
+    [ glob $(boost-root)/doc/src/images/*.png ] :
+        <location>html/images
+    ;
+
+install svg :
+    [ glob $(boost-root)/doc/src/images/*.svg ] :
+        <location>html/images
+    ;

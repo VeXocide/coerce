@@ -1,0 +1,55 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Getting started]
+
+[heading as]
+
+An equivalent to the now famous "Hello, world!" example would be as follows:
+
+    #include <boost/coerce.hpp>
+
+    int 
+    main() {
+        using namespace boost;
+
+        int i = coerce::as<int>("23");
+
+        return 0;
+    }
+
+This will convert the string "23" to the target type, `int` in the above
+example, and assign it to `i`. If tried with an input string that could not
+be converted to `int` a `boost::coerce::bad_cast` exception would be thrown.
+
+[heading as_default]
+
+When such an exception is undesirable there is the `boost::coerce::as_default`
+interface:
+
+    #include <boost/coerce.hpp>
+
+    int
+    main() {
+        using namespace boost;
+
+        int j = coerce::as_default<int>("XXX");
+        int k = coerce::as_default<int>("XXX", 23);
+
+        return 0;
+    }
+
+Since the string "XXX" can not be converted to the target type `int` a default
+constructed target type is assigned to `j` (with a target type `int` this means
+0). This works great in combination with `boost::optional<T>` returning a
+default constructed (thus empty) `boost::optional<T>` on failure. Of course it
+is also possible to specify what should be returned on failure as seen in the 
+assignment to `k`, again "XXX" can not be converted to `int` thus 23 is
+assigned.
+
+[endsect]

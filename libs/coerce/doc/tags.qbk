@@ -1,0 +1,144 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Tags]
+
+[heading Description]
+
+Essentially tags are to Coerce what manipulators are to stream objects, a way to influence format generation and parsing.
+
+[heading Namespace]
+
+    namespace boost::coerce::tag
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+    #include <boost/coerce/tag/base.hpp>
+
+    int
+    main() {
+        using namespace boost;
+    
+        int i = coerce::as<int>("0x23", coerce::tag::hex());
+
+        int j = coerce::as_default<int>("XXX", coerce::tag::hex());
+        int k = coerce::as_default<int>("XXX", 23, coerce::tag::hex());
+
+        return 0;
+    }
+
+[section Base]
+
+[heading Description]
+
+Parse or generate an integer number with a base other than ten.
+
+[heading Header]
+
+    #include boost/coerce/tag/base.hpp
+
+[heading Synopsis]
+
+    template <unsigned N>
+    struct base { };
+
+    struct hex
+        : base<16> { };
+
+    struct oct
+        : base<8> { };
+
+    struct bin
+        : base<2> { };
+
+[heading String to type]
+
+This will parse an integer (either signed or unsigned) using radix 2 for `bin`,
+8 for `oct`, 16 for `hex` or any radix between 2 and 36 for base<N>. The `hex`
+parser will accept an optional prefix of "0x" or "0X", the other don't accept
+any prefixes.
+
+Using this conversion with a non-integer type will lead to a static assertion.
+
+[heading Type to string]
+
+This will generate a string representation of an integer (either signed or 
+unsigned) using radix 2 for `bin`, 8 for `oct`, 16 for `hex` or any radix 
+between 2 and 36 for base<N>. No prefix is generated.
+
+Using this conversion with a non-integral type will lead to a static assertion.
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+    #include <boost/coerce/tag/base.hpp>
+
+    int
+    main() {
+        using namespace boost;
+
+        int i = coerce::as<int>("0x23", coerce::tag::hex());
+
+        return 0;
+    }
+
+This will parse the input of "0x23" and assign 35 to `i`.
+
+[endsect]
+
+[section Precision]
+
+[heading Description]
+
+Specify the decimal precision to be used when generating floating point types,
+it is similar to `std::setprecision`.
+
+[heading Header]
+
+    #include boost/coerce/tag/precision.hpp
+
+[heading Synopsis]
+
+    struct precision {
+        precision(unsigned const &);
+    }
+
+[heading String to type]
+
+Not applicable, a static assertion will be trigger upon use.
+
+[heading Type to string]
+
+This will generate a string representation of a floating point type rounded to
+the specified number of decimals.
+
+Using this conversion with a non-floating point type will lead to a static assertion.
+
+[heading Example]
+
+        #include <boost/coerce.hpp>
+        #include <boost/coerce/tag/precision.hpp>
+
+        #include <string>
+
+        int
+        main() {
+            using namespace boost;
+
+            std::string s = coerce::as<std::string>(1.0182818L, coerce::tag::precision(2));
+
+            return 0;
+        }
+
+This will cause 1.0182818 to be rounded to 2 decimals when generated, resulting
+in the string "1.02".
+
+[endsect]
+
+[endsect]

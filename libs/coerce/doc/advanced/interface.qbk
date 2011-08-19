@@ -1,0 +1,27 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Interface]
+
+Both `coerce::as` and `coerce::as_default` are wrappers around the following interface:
+
+    template <
+        typename Target,
+        typename Source,
+        typename Tag,
+        typename Enable = void
+    >
+    coerce::traits::as<Target, Source, Tag>::template <
+        typename Target,
+        typename Source,
+        typename Tag
+    >
+    static bool
+    call(Target &, Source const &, Tag const &);
+
+[endsect]
