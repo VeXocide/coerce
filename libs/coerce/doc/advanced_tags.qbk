@@ -8,6 +8,117 @@
 
 [section Tags]
 
-TODO
+As described before tags are to Coerce what manipulators are to stream objects,
+though more extensible.
+
+[heading Namespace]
+
+Any namespace.
+
+[heading Synopsis]
+
+    struct <undefined> {
+        template <typename Iterator, typename Target, typename Source>
+        struct parser {
+            parser(<undefined> const &) { }
+        };
+
+        template <typename Iterator, typename Target, typename Source>
+        struct generator {
+            generator(<undefined> const &) { }
+        };
+    };
+
+For the default backend, for your own backend you are free to implement tags as
+you like.
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`Iterator`] [The iterator type.] [None]]
+    [[`Target`] [The target type.] [None]]
+    [[`Source`] [The source type.] [None]]
+]
+
+[variablelist Notation
+    [[`Iterator`] [An iterator type.]]
+    [[`Target`] [An arbitrary type.]]
+    [[`Source`] [An arbitrary type.]]
+]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`parser<Iterator, Target, Source>`]
+        [A Qi parser.]
+    ]
+    [
+        [`generator<Iterator, Target, Source>`]
+        [A Karma generator.]
+    ]
+]
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+    #include <boost/spirit/include/karma_grammar.hpp>
+    #include <boost/spirit/include/karma_uint.hpp>
+    #include <boost/spirit/include/karma_sequence.hpp>
+    #include <boost/spirit/include/karma_string.hpp>
+    #include <boost/spirit/include/qi_grammar.hpp>
+    #include <boost/spirit/include/qi_lit.hpp>
+    #include <boost/spirit/include/qi_uint.hpp>
+    #include <boost/spirit/include/qi_sequence.hpp>
+
+    #include <iostream>
+    #include <limits>
+    #include <string>
+
+    namespace tag {
+        using namespace boost;
+
+        struct hexadecimal {
+            template <typename Iterator, typename Target, typename Source>
+            struct parser
+                : spirit::qi::grammar<Iterator, Target()> {
+                parser(tag::hexadecimal const &)
+                    : parser::base_type(start) {
+                    start =     spirit::qi::lit("0x")
+                            >>  spirit::qi::hex;
+                    }
+
+                spirit::qi::rule<Iterator, Target()> start;
+            };
+
+            template <typename Iterator, typename Target, typename Source>
+            struct generator
+                : spirit::karma::grammar<Iterator, Source()> {
+                generator(tag::hexadecimal const &)
+                    : generator::base_type(start) {
+                    start =     spirit::karma::lit("0x")
+                            <<  spirit::karma::hex;
+                }
+
+                spirit::karma::rule<Iterator, Source()> start;
+            };
+        };
+
+    }  // namespace tag
+
+    int
+    main() {
+        using namespace boost;
+
+        std::cout
+            << coerce::as<unsigned int>("0x23", tag::hexadecimal()) << std::endl;
+
+        std::cout << coerce::as<std::string>(23u, tag::hexadecimal()) << std::endl;
+    }
+
+[heading Rationale]
+
+The constructors in both `parser` and `generator` are there to allow a tag to
+store state and pass this to the respective parser and generator.
 
 [endsect]

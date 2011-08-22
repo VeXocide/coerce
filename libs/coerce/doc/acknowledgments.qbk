@@ -8,12 +8,12 @@
 
 [section Acknowledgments]
 
-First of all I'd like to thank the authors of Spirit, Harmut Kaiser and Joel de
-Guzman as well as everyone involved in the creation of this great library,
-without which this wouldn't have been possible.
+First of all I wouldd like to thank the authors of Spirit, Harmut Kaiser and
+Joel de Guzman as well as everyone involved in the creation of this great
+library, without which this would not have been possible.
 
-I'm very grateful to Google for the Google Summer of Code allowing me time to
-work on this project and Hartmut Kaiser in for mentoring me.
+I am very grateful to Google for the Google Summer of Code allowing me time to
+work on this project and Hartmut Kaiser for mentoring me.
 
 A big thank you also goes out to Rudy Hardeman, for hosting a Hudson install
 with MSVC 10 allowing me to test my code using this compiler.
