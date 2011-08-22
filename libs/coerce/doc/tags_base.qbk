@@ -1,0 +1,66 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Base]
+
+[heading Description]
+
+Parse or generate an integer number with a base other than ten.
+
+[heading Header]
+
+    #include boost/coerce/tag/base.hpp
+
+[heading Synopsis]
+
+    template <unsigned N>
+    struct base { };
+
+    struct hex
+        : base<16> { };
+
+    struct oct
+        : base<8> { };
+
+    struct bin
+        : base<2> { };
+
+[heading String to type]
+
+This will parse an integer (either signed or unsigned) using radix 2 for `bin`,
+8 for `oct`, 16 for `hex` or any radix between 2 and 36 for base<N>. The `hex`
+parser will accept an optional prefix of "0x" or "0X", the other don't accept
+any prefixes.
+
+Using this conversion with a non-integer type will lead to a static assertion.
+
+[heading Type to string]
+
+This will generate a string representation of an integer (either signed or 
+unsigned) using radix 2 for `bin`, 8 for `oct`, 16 for `hex` or any radix 
+between 2 and 36 for base<N>. No prefix is generated.
+
+Using this conversion with a non-integral type will lead to a static assertion.
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+    #include <boost/coerce/tag/base.hpp>
+
+    int
+    main() {
+        using namespace boost;
+
+        int i = coerce::as<int>("0x23", coerce::tag::hex());
+
+        return 0;
+    }
+
+This will parse the input of "0x23" and assign 35 to `i`.
+
+[endsect]

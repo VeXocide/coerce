@@ -1,0 +1,114 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section string_traits]
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Enable>
+    struct string_traits {
+        typedef <unspecified> const_iterator;
+        typedef <unspecified> size_type;
+
+        static const_iterator begin(T const &);
+        static const_iterator end(T const &);
+        static size_type length(T const &);
+    };
+
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [The type.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `string_traits` utilizing SFINAE
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+    [[`t`] [An instance of `T`.]]
+    [[`N`] [An arbitrary integral constant.]]
+    [[`Char`] [A character type as defined by __traits_is_char__.]]
+    [[`Traits`] [A character traits type.]]
+    [[`Allocator`] [A standard allocator type.]]
+]
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`string<T>::const_iterator`]
+        [Evaluates to the return type of `string<T>::begin(t)` and `string<T>::end(t)`.]
+    ]
+    [
+        [`string<T>::size_type`]
+        [Evaluates to the return type of `string<T>::length(t)`.]
+    ]
+    [
+        [`string<T>::begin(t)`]
+        [Returns a `const_iterator` pointing to the beginning of the string.]
+    ]
+    [
+        [`string<T>::end(t)`]
+        [Returns a `const_iterator` pointing to the end of the string.]
+    ]
+    [
+        [`string<T>::length(t)`] [Returns the length of the string.]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Semantics]]
+    [[`T const`] [`T`]]
+    [[`Char *`] []]
+    [[`Char [N]`] []]
+    [[`std::basic_string<Char, Traits, Allocator>`] []]
+]
+
+[heading Example]
+
+    template <typename Char, typename Traits, typename Allocator>
+    struct string_traits<std::basic_string<Char, Traits, Allocator> > {
+        typedef std::basic_string<Char, Traits, Allocator> type;
+
+        typedef typename type::const_iterator const_iterator;
+        typedef typename type::size_type size_type;
+
+        static const_iterator
+        begin(type const & value) {
+            return value.begin();
+        }
+
+        static const_iterator
+        end(type const & value) {
+            return value.end();
+        }
+
+        static size_type
+        length(type const & value) {
+            return value.length();
+        }
+    };
+
+[endsect]

@@ -1,0 +1,105 @@
+[section reserve_size]
+
+[heading Description]
+
+`reserve_size` is a metafunction to determine the amount of space to reserve in a sequence.
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Tag, typename Enable>
+    struct reserve_size {
+        static std::size_t call(T const &, Tag const &);
+    };
+
+[heading Template parameters]
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [An arbitrary type.] [None]]
+    [[`Tag`] [A tag type.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `reserve_size` utilizing SFINAE 
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+    [[`t`] [An instance of `T`.]]
+    [[`Tag`] [A tag type.]]
+    [[`tag`] [An instance of `Tag`.]]
+    [[`Radix`] [An unsigned integer between 2 and 36.]]
+]
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`reserve_size<T, Tag>::call(t, tag)`]
+        [The amount of space to reserve in a string sequence when generating a
+            string representation of t.]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Tag] [Semantics]]
+    [[`T`] [`Tag`] [0]]
+    [[`T const`] [`Tag`] [`T`]]
+    [[`char`] [`Tag`] [1]]
+    [[`wchar_t`] [`Tag`] [1]]
+    [
+        [`int`]
+        [`Tag`]
+        [`std::numeric_limits<int>::is_signed` + 1 +
+            `std::numeric_limits<int>::digits10`]
+    ]
+    [
+        [`int`]
+        [`tag::base<Radix>`]
+        [1 + `std::numeric_limits<int>::digits / static_log2<Radix>::value`]
+    ]
+    [[`int`] [`tag::bin`] [1 + `std::numeric_limits<int>::digits`]]
+    [[`int`] [`tag::oct`] [1 + `std::numeric_limits<int>::digits / 3`]]
+    [[`int`] [`tag::hex`] [1 + `std::numeric_limits<int>::digits / 4`]]
+    [[`short`] [] [Similar to `int`]]
+    [[`long`] [] [Similar to `int`]]
+    [[`unsigned int`] [] [Similar to `int`]]
+    [[`unsigned short`] [] [Similar to `int`]]
+    [[`unsigned long`] [] [Similar to `int`]]
+    [[`boost::long_long_type`] [] [Similar to `int`]]
+    [[`boost::ulong_long_type`] [] [Similar to `int`]]
+    [
+        [`float`]
+        [`Tag`]
+        [`std::numeric_limits<float>::is_signed` + 8 +
+            `detail::precision<float>::value`]
+    ]
+    [[`double`] [] [Similar to `float`]]
+    [[`long double`] [] [Similar to `float`]]
+    [[`bool`] [`Tag`] [5]]
+    [[`boost::optional<T>`] [`Tag`] [`T`]]
+]
+
+[heading Example]
+
+    template <typename T>
+    struct reserve_size<T, tag::hex> {
+        static std::size_t
+        call(T const &, tag::hex const &) {
+            return 2 + std::numeric_limits<unsigned int>::digits / 4;
+        }
+    };
+
+[endsect]

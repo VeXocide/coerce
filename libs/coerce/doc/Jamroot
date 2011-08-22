@@ -23,10 +23,10 @@ boostbook standalone :
         <xsl:param>navig.graphics=1
         
         <xsl:param>chunk.first.sections=1
-        <xsl:param>chunk.section.depth=2
+        <xsl:param>chunk.section.depth=3
         # <xsl:param>generate.section.toc.level=4
-        # <xsl:param>toc.max.depth=3
-        # <xsl:param>toc.section.depth=3
+        <xsl:param>toc.max.depth=3
+        <xsl:param>toc.section.depth=3
 
         <dependency>css
         <dependency>png

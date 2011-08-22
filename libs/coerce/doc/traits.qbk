@@ -6,10 +6,10 @@
             http://www.boost.org/LICENSE_1_0.txt)
 ]
 
-[section Advanced]
+[section Traits]
 
-[include advanced_backend.qbk]
-[include advanced_interface.qbk]
-[include advanced_tags.qbk]
+[include traits_sequence.qbk]
+[include traits_string.qbk]
+[include traits_reserve_size.qbk]
 
 [endsect]

@@ -26,14 +26,16 @@ namespace boost { namespace coerce { namespace detail {
         template <typename Target, typename Source, typename Tag>
         static inline bool
         call(Target & target, Source const & source, Tag const & tag) {
+            typedef traits::sequence_traits<Target> sequence_traits;
+            
             detail::call_reserve(
                 target, traits::reserve_size<Source, Tag>::call(source, tag));
 
-            typename traits::sequence<Target>::type iterator =
-                traits::sequence<Target>::back_inserter(target);
+            typename sequence_traits::iterator iterator =
+                sequence_traits::back_inserter(target);
 
             typename Tag::template generator<
-                typename traits::sequence<Target>::type, Target, Source
+                typename sequence_traits::iterator, Target, Source
             > generator(tag);
 
             bool result = spirit::karma::generate(

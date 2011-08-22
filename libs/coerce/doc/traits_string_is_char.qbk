@@ -1,0 +1,76 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section is_char]
+
+[heading Description]
+
+`is_char` is a metafunction that detects if a given type is a character.
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Enable>
+    struct is_char
+    {
+        <unspecified>;
+    };
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [The type to detect.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `transform_attribute` utilizing SFINAE
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+]
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`is_char<T>::type`]
+        [`mpl::true_` if T should be treated as a character type, and
+            `mpl::false_` otherwise. Generally, any implementation of `is_char`
+            needs to behave as if if was a __mpl_boolean_constant__.]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Semantics]]
+    [[`T`] [`mpl::false_`]]
+    [[`T const`] [`is_char<T>`]]
+    [[`char`] [`mpl::true_`]]
+    [[`wchar_t`] [`mpl::true_`]]
+]
+
+[heading Example]
+
+    template <>
+    struct is_char<char>
+        : mpl::true_ { };
+
+[endsect]

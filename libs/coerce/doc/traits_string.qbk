@@ -1,4 +1,4 @@
-[/
+[/              
                 Copyright Jeroen Habraken 2011.
 
    Distributed under the Boost Software License, Version 1.0.
@@ -6,10 +6,10 @@
             http://www.boost.org/LICENSE_1_0.txt)
 ]
 
-[section Advanced]
+[section String]
 
-[include advanced_backend.qbk]
-[include advanced_interface.qbk]
-[include advanced_tags.qbk]
+[include traits_string_is_char.qbk]
+[include traits_string_is_string.qbk]
+[include traits_string_string_traits.qbk]
 
 [endsect]

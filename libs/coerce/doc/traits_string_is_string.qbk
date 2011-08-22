@@ -1,0 +1,84 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section is_string]
+
+[heading Description]
+
+`is_string` is a metafunction that detects if a given type is a string.
+
+[caution `is_string<T>` requires `string_traits<T>` to be specialized.]
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Enable>
+    struct is_string
+    {
+        <unspecified>;
+    };
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [The type to detect.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `transform_attribute` utilizing SFINAE
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+    [[`N`] [An arbitrary integral constant.]]
+    [[`Char`] [A character type as defined by __traits_is_char__.]]
+    [[`Traits`] [A character traits type.]]
+    [[`Allocator`] [A standard allocator type.]]
+]
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`is_string<T>::type`]
+        [`mpl::true_` if T should be treated as a string type, and
+            `mpl::false_` otherwise. Generally, any implementation of
+            `is_string` needs to behave as if if was a
+            __mpl_boolean_constant__.]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Semantics]]
+    [[`T`] [`mpl::false_`]]
+    [[`T const`] [`is_string<T>`]]
+    [[`Char *`] [`mpl::true_`]]
+    [[`Char [N]`] [`mpl::true_`]]
+    [[`std::basic_string<Char, Traits, Allocator>`] [`mpl::true_`]]
+]
+
+[heading Example]
+
+    template <typename Char, typename Traits, typename Allocator>
+    struct is_string<std::basic_string<Char, Traits, Allocator> >
+        : mpl::true_ { };
+
+[endsect]

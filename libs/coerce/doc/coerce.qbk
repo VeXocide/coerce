@@ -22,3 +22,5 @@
 [include synopsis.qbk]
 [include tags.qbk]
 [include advanced.qbk]
+[include traits.qbk]
+[include acknowledgments.qbk]

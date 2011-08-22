@@ -6,8 +6,9 @@
             http://www.boost.org/LICENSE_1_0.txt)
 ]
 
-[section Backend]
+[section Sequence]
 
-TODO
+[include traits_sequence_is_sequence.qbk]
+[include traits_sequence_sequence_traits.qbk]
 
 [endsect]

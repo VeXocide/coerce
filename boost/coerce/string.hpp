@@ -9,9 +9,7 @@
 
 #include <boost/coerce/char.hpp>
 
-#include <boost/mpl/identity.hpp>
-#include <boost/mpl/not.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
 #include <cstddef>  // std::size_t
@@ -95,7 +93,7 @@ namespace boost { namespace coerce { namespace traits {
 
     template <typename T>
     struct is_string_impl
-        : mpl::identity<mpl::false_> { };
+        : mpl::false_ { };
 
     template <typename T>
     struct is_string_impl<T *>
