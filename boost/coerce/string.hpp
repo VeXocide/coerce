@@ -50,12 +50,12 @@ namespace boost { namespace coerce { namespace traits {
 
         static inline const_iterator
         begin(T const(& value)[N]) {
-            return &value[0];
+            return value;
         }
 
         static inline const_iterator
         end(T const(& value)[N]) {
-            return &value[0] + length(value);
+            return value + length(value);
         }
 
         static inline size_type
