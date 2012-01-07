@@ -1,8 +1,18 @@
-This project had been renamed to "coerce" and can now be found in the Boost sandbox at http://svn.boost.org/svn/boost/sandbox/coerce/.
+This project had been renamed to "coerce" and can now be found in the Boost 
+sandbox at http://svn.boost.org/svn/boost/sandbox/coerce/.
 
-Note that the API has since changes, a quick summary:
-* boost::construe_cast<int>("23") is now written as boost::coerce::as<int>("23")
-* boost::construe_cast<int>("XXX", 42) is now written as boost::coerce::as_default<int>("XXX", 42) -- the 42 is now optional and when omitted it will return a default constructed int, this is especially useful in combination with boost::optional
-* boost::construe_cast<unsigned int, boost::construe::tag::hex>("0x23") is now written as boost::coerce::as<unsigned int>("0x23", boost::coerce::tag::hex()) -- this allows more flexibility with the tags at a later stage
+Note that the API has since changes:
+ - boost::construe_cast<int>("23") is now written as  
+   boost::coerce::as<int>("23"),
 
-More examples can be found in the repository at http://svn.boost.org/svn/boost/sandbox/coerce/libs/coerce/example/.
+ - boost::construe_cast<int>("XXX", 42) is now written as 
+   boost::coerce::as_default<int>("XXX", 42) -- the 42 is now optional and 
+   when omitted it will return a default constructed int, this is especially 
+   useful in combination with boost::optional,
+
+ - boost::construe_cast<unsigned int, boost::construe::tag::hex>("0x23") is 
+   now written as boost::coerce::as<unsigned int>("0x23",     
+   boost::coerce::tag::hex()).
+
+More examples can be found in the repository at 
+http://svn.boost.org/svn/boost/sandbox/coerce/libs/coerce/example/.
