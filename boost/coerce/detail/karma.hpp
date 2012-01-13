@@ -1,4 +1,4 @@
-//           Copyright Jeroen Habraken 2010 - 2011.
+//           Copyright Jeroen Habraken 2010 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
@@ -31,17 +31,12 @@ namespace boost { namespace coerce { namespace detail {
             detail::call_reserve(
                 target, traits::reserve_size<Source, Tag>::call(source, tag));
 
-            typename sequence_traits::iterator iterator =
-                sequence_traits::back_inserter(target);
-
             typename Tag::template generator<
                 typename sequence_traits::iterator, Target, Source
             > generator(tag);
 
-            bool result = spirit::karma::generate(
-                iterator, generator, source);
-
-            return result; 
+            return spirit::karma::generate(
+                sequence_traits::back_inserter(target), generator, source);
         }
     };
 

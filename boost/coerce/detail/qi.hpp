@@ -1,4 +1,4 @@
-//           Copyright Jeroen Habraken 2010 - 2011.
+//           Copyright Jeroen Habraken 2010 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
@@ -28,25 +28,20 @@ namespace boost { namespace coerce { namespace detail {
         call(Target & target, Source const & source, Tag const & tag) {
             typedef traits::string_traits<Source> string_traits;
 
-            typename string_traits::size_type
-                length = string_traits::length(source);
-            detail::call_reserve(target, length);
-
             typename string_traits::const_iterator
                 begin = string_traits::begin(source), iterator = begin;
+
+            typename string_traits::const_iterator
+                end = string_traits::end(source);
 
             typename Tag::template parser<
                 typename string_traits::const_iterator, Target, Source
             > parser(tag);
 
             bool result = spirit::qi::parse(
-                iterator, string_traits::end(source), parser, target);
+                iterator, end, parser, target);
 
-            if (static_cast<typename string_traits::size_type>(iterator - begin) != length) {
-                return false;
-            }
-
-            return result;
+            return result && (iterator == end);
         }
     };
 

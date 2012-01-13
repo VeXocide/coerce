@@ -1,4 +1,4 @@
-//              Copyright Jeroen Habraken 2011.
+//           Copyright Jeroen Habraken 2011 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
@@ -23,7 +23,6 @@ namespace boost { namespace coerce { namespace traits {
     template <typename T>
     struct string_traits_impl<T *> {
         typedef T const * const_iterator;
-        typedef std::size_t size_type;
 
         static inline const_iterator
         begin(T * const value) {
@@ -32,21 +31,15 @@ namespace boost { namespace coerce { namespace traits {
 
         static inline const_iterator
         end(T * const value) {
-            return value + length(value) + 1;
-        }
-
-        static inline size_type
-        length(T * const value) {
-            return std::char_traits<
-                    typename remove_const<T>::type
-                >::length(value);
+            return value + std::char_traits<
+                               typename remove_const<T>::type
+                           >::length(value);
         }
     };
 
     template <typename T, std::size_t N>
     struct string_traits_impl<T [N]> {
         typedef T const * const_iterator;
-        typedef std::size_t size_type;
 
         static inline const_iterator
         begin(T const(& value)[N]) {
@@ -55,12 +48,7 @@ namespace boost { namespace coerce { namespace traits {
 
         static inline const_iterator
         end(T const(& value)[N]) {
-            return value + length(value);
-        }
-
-        static inline size_type
-        length(T const(& value)[N]) {
-            return value[N - 1] == 0 ? N - 1 : N;
+            return value + (value[N - 1] == 0 ? N - 1 : N);
         }
     };
 
@@ -69,7 +57,6 @@ namespace boost { namespace coerce { namespace traits {
         typedef std::basic_string<T, Traits, Allocator> type;
 
         typedef typename type::const_iterator const_iterator;
-        typedef typename type::size_type size_type;
 
         static inline const_iterator
         begin(type const & value) {
@@ -79,11 +66,6 @@ namespace boost { namespace coerce { namespace traits {
         static inline const_iterator
         end(type const & value) {
             return value.end();
-        }
-
-        static inline size_type
-        length(type const & value) {
-            return value.length();
         }
     };
 
