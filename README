@@ -1,7 +1,7 @@
 This project had been renamed to "coerce" and can now be found in the Boost 
 sandbox at http://svn.boost.org/svn/boost/sandbox/coerce/.
 
-Note that the API has since changes:
+Note that the API has since changed:
  - boost::construe_cast<int>("23") is now written as  
    boost::coerce::as<int>("23"),
 
