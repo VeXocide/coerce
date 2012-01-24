@@ -4,8 +4,8 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_DETAIL_BACKEND_HPP
-#define BOOST_COERCE_DETAIL_BACKEND_HPP
+#ifndef BOOST_COERCE_DETAIL_SPIRIT_HPP
+#define BOOST_COERCE_DETAIL_SPIRIT_HPP
 
 #ifdef _MSC_VER
 #pragma once
@@ -20,20 +20,20 @@
 namespace boost { namespace coerce { namespace detail {
 
     template <typename U, typename V>
-    struct backend {
+    struct spirit {
         BOOST_STATIC_ASSERT(sizeof(U) == 0);
     };
 
-    template <typename U>
-    struct backend<U, mpl::true_> {
+    template <>
+    struct spirit<mpl::true_, mpl::false_> {
         typedef qi type;
     };
 
-    template <>
-    struct backend<mpl::true_, mpl::false_> {
+    template <typename U>
+    struct spirit<U, mpl::true_> {
         typedef karma type;
     };
 
 } } }  // namespace boost::coerce::detail
 
-#endif  // BOOST_COERCE_DETAIL_BACKEND_HPP
+#endif  // BOOST_COERCE_DETAIL_SPIRIT_HPP

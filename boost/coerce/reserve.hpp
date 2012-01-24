@@ -34,10 +34,12 @@ namespace boost { namespace coerce { namespace traits {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
+#ifndef BOOST_NO_INTRINSIC_WCHAR_T
     template <typename Tag>
     struct reserve_size_impl<wchar_t, Tag> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
+#endif
 
     template <typename T, typename Tag>
     struct reserve_size_impl_integral {

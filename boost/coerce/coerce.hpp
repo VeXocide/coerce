@@ -1,4 +1,4 @@
-//           Copyright Jeroen Habraken 2010 - 2011.
+//           Copyright Jeroen Habraken 2010 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
@@ -11,9 +11,8 @@
 #pragma once
 #endif
 
-#include <boost/coerce/detail/backend.hpp>
+#include <boost/coerce/detail/spirit.hpp>
 #include <boost/coerce/detail/tag.hpp>
-#include <boost/coerce/sequence.hpp>
 #include <boost/coerce/string.hpp>
 #include <boost/coerce/tag.hpp>
 
@@ -33,9 +32,9 @@ namespace boost { namespace coerce {
           , typename Enable = void
         >
         struct as
-            : detail::backend<
-                typename traits::is_sequence<Target>::type,
-                typename traits::is_string<Source>::type
+            : detail::spirit<
+                typename traits::is_source_string<Source>::type,
+                typename traits::is_target_string<Target>::type
             >::type { };
 
     }  // namespace traits

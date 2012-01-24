@@ -14,6 +14,7 @@
 
 #include <cstddef>  // std::size_t
 #include <string>
+#include <vector>
 
 namespace boost { namespace coerce { namespace traits {
 
@@ -67,6 +68,25 @@ namespace boost { namespace coerce { namespace traits {
         end(type const & value) {
             return value.end();
         }
+
+        typedef std::back_insert_iterator<type> back_insert_iterator;
+
+        static inline back_insert_iterator
+        back_inserter(type & value) {
+            return std::back_inserter(value);
+        }
+    };
+
+    template <typename T, typename Allocator>
+    struct string_traits_impl<std::vector<T, Allocator> > {
+        typedef std::vector<T, Allocator> type;
+
+        typedef std::back_insert_iterator<type> back_insert_iterator;
+
+        static inline back_insert_iterator
+        back_inserter(type & value) {
+            return std::back_inserter(value);
+        }
     };
 
     template <typename T, typename Enable = void>
@@ -74,24 +94,40 @@ namespace boost { namespace coerce { namespace traits {
         : string_traits_impl<T> { };
 
     template <typename T>
-    struct is_string_impl
+    struct is_source_string_impl
         : mpl::false_ { };
 
     template <typename T>
-    struct is_string_impl<T *>
+    struct is_source_string_impl<T *>
         : traits::is_char<T> { };
 
     template <typename T, std::size_t N>
-    struct is_string_impl<T [N]>
+    struct is_source_string_impl<T [N]>
         : traits::is_char<T> { };
 
     template <typename T, typename Traits, typename Allocator>
-    struct is_string_impl<std::basic_string<T, Traits, Allocator> >
+    struct is_source_string_impl<std::basic_string<T, Traits, Allocator> >
         : traits::is_char<T> { };
 
     template <typename T, typename Enable = void>
-    struct is_string
-        : is_string_impl<T> { };
+    struct is_source_string
+        : is_source_string_impl<T> { };
+
+    template <typename T>
+    struct is_target_string_impl
+        : mpl::false_ { };
+
+    template <typename T, typename Traits, typename Allocator>
+    struct is_target_string_impl<std::basic_string<T, Traits, Allocator> >
+        : traits::is_char<T> { };
+
+    template <typename T, typename Allocator>
+    struct is_target_string_impl<std::vector<T, Allocator> >
+        : traits::is_char<T> { };
+
+    template <typename T, typename Enable = void>
+    struct is_target_string
+        : is_target_string_impl<T> { };
 
 } } }  // namespace boost::coerce::traits
 

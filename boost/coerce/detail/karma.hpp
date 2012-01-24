@@ -12,7 +12,7 @@
 #endif
 
 #include <boost/coerce/reserve.hpp>
-#include <boost/coerce/sequence.hpp>
+#include <boost/coerce/string.hpp>
 #include <boost/coerce/tag.hpp>
 
 #include <boost/spirit/home/karma/char.hpp>
@@ -26,17 +26,17 @@ namespace boost { namespace coerce { namespace detail {
         template <typename Target, typename Source, typename Tag>
         static inline bool
         call(Target & target, Source const & source, Tag const & tag) {
-            typedef traits::sequence_traits<Target> sequence_traits;
+            typedef traits::string_traits<Target> string_traits;
             
             detail::call_reserve(
                 target, traits::reserve_size<Source, Tag>::call(source, tag));
 
             typename Tag::template generator<
-                typename sequence_traits::iterator, Target, Source
+                typename string_traits::back_insert_iterator, Target, Source
             > generator(tag);
 
             return spirit::karma::generate(
-                sequence_traits::back_inserter(target), generator, source);
+                string_traits::back_inserter(target), generator, source);
         }
     };
 
