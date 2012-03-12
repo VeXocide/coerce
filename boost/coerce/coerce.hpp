@@ -66,8 +66,7 @@ namespace boost { namespace coerce {
     }
 
     template <typename Target, typename Source, typename Tag>
-    inline typename enable_if<
-        detail::is_tag<Tag>, Target>::type
+    inline typename enable_if<detail::is_tag<Tag>, Target>::type
     as_default(
         Source const & source,
         Tag const & tag,

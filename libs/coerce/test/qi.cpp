@@ -1,4 +1,4 @@
-//              Copyright Jeroen Habraken 2011.
+//           Copyright Jeroen Habraken 2011 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
@@ -51,8 +51,20 @@ BOOST_AUTO_TEST_CASE(qi) {
 
     std::string string("1");
     BOOST_CHECK_EQUAL(coerce::as<int>(string), 1);
+    BOOST_CHECK_EQUAL(coerce::as<int>(boost::make_iterator_range(string)), 1);
     std::wstring wide_string(L"1");
     BOOST_CHECK_EQUAL(coerce::as<int>(wide_string), 1);
+    BOOST_CHECK_EQUAL(coerce::as<int>(
+        boost::make_iterator_range(wide_string)), 1);
+
+    std::string const string_const("1");
+    BOOST_CHECK_EQUAL(coerce::as<int>(string_const), 1);
+    BOOST_CHECK_EQUAL(coerce::as<int>(
+        boost::make_iterator_range(string_const)), 1);
+    std::wstring const wide_string_const(L"1");
+    BOOST_CHECK_EQUAL(coerce::as<int>(wide_string_const), 1);
+    BOOST_CHECK_EQUAL(coerce::as<int>(
+        boost::make_iterator_range(wide_string_const)), 1);
 
     BOOST_CHECK_EQUAL(coerce::as<int>(std::string("1")), 1);
     BOOST_CHECK_EQUAL(coerce::as<int>(std::wstring(L"1")), 1);

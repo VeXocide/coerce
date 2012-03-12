@@ -10,6 +10,7 @@
 #include <boost/coerce/char.hpp>
 
 #include <boost/mpl/bool.hpp>
+#include <boost/range/iterator_range_core.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
 #include <cstddef>  // std::size_t
@@ -77,6 +78,23 @@ namespace boost { namespace coerce { namespace traits {
         }
     };
 
+    template <typename T>
+    struct string_traits_impl<boost::iterator_range<T> > {
+        typedef boost::iterator_range<T> type;
+
+        typedef typename type::const_iterator const_iterator;
+
+        static inline const_iterator
+        begin(type const & value) {
+            return value.begin();
+        }
+
+        static inline const_iterator
+        end(type const & value) {
+            return value.end();
+        }
+    };
+
     template <typename T, typename Allocator>
     struct string_traits_impl<std::vector<T, Allocator> > {
         typedef std::vector<T, Allocator> type;
@@ -108,6 +126,10 @@ namespace boost { namespace coerce { namespace traits {
     template <typename T, typename Traits, typename Allocator>
     struct is_source_string_impl<std::basic_string<T, Traits, Allocator> >
         : traits::is_char<T> { };
+
+    template <typename T>
+    struct is_source_string_impl<boost::iterator_range<T> >
+        : traits::is_char<typename boost::iterator_range<T>::value_type> { };
 
     template <typename T, typename Enable = void>
     struct is_source_string

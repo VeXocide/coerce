@@ -1,4 +1,4 @@
-//              Copyright Jeroen Habraken 2011.
+//           Copyright Jeroen Habraken 2011 - 2012.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
@@ -13,6 +13,9 @@
 
 #include <boost/config.hpp>
 #include <boost/limits.hpp>
+#include <boost/spirit/home/karma/numeric/real.hpp>
+#include <boost/spirit/home/karma/numeric/real_policies.hpp>
+#include <boost/type_traits/remove_const.hpp>
 
 namespace boost { namespace coerce { namespace detail {
 
@@ -39,6 +42,23 @@ namespace boost { namespace coerce { namespace detail {
             is_specialized_binary ? precision_binary
                 : is_specialized_decimal ? precision_decimal : 6);
     };
+
+    template <typename Source>
+    struct real_policies
+        : spirit::karma::real_policies<
+            typename remove_const<Source>::type
+        > {
+        static inline unsigned
+        precision(Source const &) {
+            return detail::precision<Source>::value;
+        }
+    };
+
+    template <typename Source>
+    struct real_generator
+        : spirit::karma::real_generator<
+            Source, detail::real_policies<Source>
+        > { };
 
 } } }  // namespace boost::coerce::detail
 
