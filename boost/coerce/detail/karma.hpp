@@ -19,6 +19,7 @@
 #include <boost/spirit/home/karma/generate.hpp>
 #include <boost/spirit/home/karma/numeric.hpp>
 #include <boost/spirit/home/karma/operator/optional.hpp>
+#include <boost/spirit/home/karma/string/lit.hpp>
 
 namespace boost { namespace coerce { namespace detail {
 

@@ -19,9 +19,9 @@
 
 namespace boost { namespace coerce { namespace detail {
 
-    template <typename U, typename V>
+    template <typename T, typename U>
     struct spirit {
-        BOOST_STATIC_ASSERT(sizeof(U) == 0);
+        BOOST_STATIC_ASSERT(sizeof(T) == 0);
     };
 
     template <>
@@ -29,8 +29,8 @@ namespace boost { namespace coerce { namespace detail {
         typedef qi type;
     };
 
-    template <typename U>
-    struct spirit<U, mpl::true_> {
+    template <typename T>
+    struct spirit<T, mpl::true_> {
         typedef karma type;
     };
 
