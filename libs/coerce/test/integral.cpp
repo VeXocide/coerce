@@ -42,10 +42,10 @@ BOOST_AUTO_TEST_CASE(source) {
       , unsigned int
       , long
       , unsigned long
-#ifdef BOOST_HAS_LONG_LONG
+#if defined(BOOST_HAS_LONG_LONG)
       , boost::long_long_type
       , boost::ulong_long_type
-#endif
+#endif  // defined(BOOST_HAS_LONG_LONG)
     > integral_types;
 
     boost::mpl::for_each<integral_types>(test);
@@ -110,10 +110,10 @@ BOOST_AUTO_TEST_CASE(target) {
       , unsigned int
       , long
       , unsigned long
-#ifdef BOOST_HAS_LONG_LONG
+#if defined(BOOST_HAS_LONG_LONG)
       , boost::long_long_type
       , boost::ulong_long_type
-#endif
+#endif  // defined(BOOST_HAS_LONG_LONG)
       , float
       , double
       , long double

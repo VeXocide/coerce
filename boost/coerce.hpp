@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_HPP
+#if !defined(BOOST_COERCE_HPP)
 #define BOOST_COERCE_HPP
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/coerce/coerce.hpp>
 
-#endif  // BOOST_COERCE_HPP
+#endif  // !defined(BOOST_COERCE_HPP)

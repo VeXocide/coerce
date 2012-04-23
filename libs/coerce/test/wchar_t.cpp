@@ -17,18 +17,15 @@
 BOOST_AUTO_TEST_CASE(source) {
     using namespace boost;
 
-#ifndef BOOST_NO_INTRINSIC_WCHAR_T
     BOOST_CHECK_EQUAL(coerce::as<std::string>(L'\0'), std::string("\0", 1));
     BOOST_CHECK_EQUAL(coerce::as<std::string>(L' '), " ");
     BOOST_CHECK_EQUAL(coerce::as<std::string>(L'\x23'), "\x23");
     BOOST_CHECK_EQUAL(coerce::as<std::string>(L'A'), "A");
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(target) {
     using namespace boost;
 
-#ifndef BOOST_NO_INTRINSIC_WCHAR_T
     BOOST_CHECK_THROW(coerce::as<wchar_t>(""), coerce::bad_cast);
 
     BOOST_CHECK_EQUAL(coerce::as<wchar_t>("\0"), L'\0');
@@ -37,5 +34,4 @@ BOOST_AUTO_TEST_CASE(target) {
     BOOST_CHECK_EQUAL(coerce::as<wchar_t>("A"), L'A');
 
     BOOST_CHECK_THROW(coerce::as<wchar_t>("XXX"), coerce::bad_cast);
-#endif
 }

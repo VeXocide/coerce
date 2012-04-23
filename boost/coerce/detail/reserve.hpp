@@ -5,12 +5,12 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_DETAIL_RESERVE_HPP
+#if !defined(BOOST_COERCE_DETAIL_RESERVE_HPP)
 #define BOOST_COERCE_DETAIL_RESERVE_HPP
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/config.hpp>
 #include <boost/mpl/bool.hpp>
@@ -79,4 +79,4 @@ namespace boost { namespace coerce { namespace detail {
 
 } } }  // namespace boost::coerce::detail
 
-#endif  // BOOST_COERCE_DETAIL_RESERVE_HPP
+#endif  // !defined(BOOST_COERCE_DETAIL_RESERVE_HPP)

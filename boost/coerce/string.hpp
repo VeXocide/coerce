@@ -4,8 +4,12 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_STRING_HPP
+#if !defined(BOOST_COERCE_STRING_HPP)
 #define BOOST_COERCE_STRING_HPP
+
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/coerce/char.hpp>
 
@@ -153,4 +157,4 @@ namespace boost { namespace coerce { namespace traits {
 
 } } }  // namespace boost::coerce::traits
 
-#endif  // BOOST_COERCE_STRING_HPP
+#endif  // !defined(BOOST_COERCE_STRING_HPP)

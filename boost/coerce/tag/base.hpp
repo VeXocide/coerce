@@ -4,12 +4,12 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_TAG_BASE_HPP
+#if !defined(BOOST_COERCE_TAG_BASE_HPP)
 #define BOOST_COERCE_TAG_BASE_HPP
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/config.hpp>
 #include <boost/spirit/home/karma/numeric/int.hpp>
@@ -28,17 +28,14 @@
 
 namespace boost { namespace coerce { namespace tag {
 
+#if defined(BOOST_MSVC)
+    #pragma warning(push) 
+    #pragma warning(disable: 4348)  // redefinition of default parameter : parameter 2
+#endif  // defined(BOOST_MSVC)
     template <unsigned Radix>
     struct base {
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable: 4348)  // redefinition of default parameter : parameter 2
-#endif
         template <typename Target, bool U = is_signed<Target>::value>
         struct parser_base;
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
         template <typename Target>
         struct parser_base<Target, true>
@@ -56,15 +53,8 @@ namespace boost { namespace coerce { namespace tag {
             }
         };
 
-#ifdef BOOST_MSVC
-#pragma warning(push)
-#pragma warning(disable: 4348)  // redefinition of default parameter : parameter 2
-#endif
         template <typename Source, bool U = is_signed<Source>::value>
         struct generator_base;
-#ifdef BOOST_MSVC
-#pragma warning(pop)
-#endif
 
         template <typename Source>
         struct generator_base<Source, true>
@@ -82,6 +72,9 @@ namespace boost { namespace coerce { namespace tag {
             }
         };
     };
+#if defined(BOOST_MSVC)
+    #pragma warning(pop)
+#endif  // defined(BOOST_MSVC)
 
     struct bin
         : base<2> { };
@@ -121,4 +114,4 @@ namespace boost { namespace coerce { namespace tag {
 
 } } }  // namespace boost::coerce::tag
 
-#endif  // BOOST_COERCE_TAG_HPP
+#endif  // !defined(BOOST_COERCE_TAG_HPP)

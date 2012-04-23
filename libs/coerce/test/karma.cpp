@@ -18,7 +18,7 @@ BOOST_TEST_DONT_PRINT_LOG_VALUE(std::wstring);
 BOOST_TEST_DONT_PRINT_LOG_VALUE(std::vector<char>);
 BOOST_TEST_DONT_PRINT_LOG_VALUE(std::vector<wchar_t>);
 
-BOOST_AUTO_TEST_CASE(qi) {
+BOOST_AUTO_TEST_CASE(karma) {
     using namespace boost;
 
     BOOST_CHECK_EQUAL(coerce::as<std::string>(1), std::string("1"));

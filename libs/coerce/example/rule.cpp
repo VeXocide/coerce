@@ -27,13 +27,13 @@ namespace tag {
             : spirit::qi::rule<Iterator, Target()> {
             parser(tag::hexadecimal const &)
                 : spirit::qi::rule<Iterator, Target()>(
-#ifndef BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+#if !defined(BOOST_SPIRIT_NO_PREDEFINED_TERMINALS)
                         spirit::qi::lit("0x")
                     >>  spirit::qi::hex
 #else
                         spirit::qi::lit_type()("0x")
                     >>  spirit::qi::hex_type()
-#endif
+#endif  // !defined(BOOST_SPIRIT_NO_PREDEFINED_TERMINALS)
                 ) { }
         };
 
@@ -42,13 +42,13 @@ namespace tag {
             : spirit::karma::rule<Iterator, Source()> {
             generator(tag::hexadecimal const &)
                 : spirit::karma::rule<Iterator, Source()>(
-#ifndef BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
+#if !defined(BOOST_SPIRIT_NO_PREDEFINED_TERMINALS)
                         spirit::karma::lit("0x")
                     <<  spirit::karma::hex
 #else
                         spirit::karma::lit_type()("0x")
                     <<  spirit::karma::hex_type()
-#endif
+#endif  // !defined(BOOST_SPIRIT_NO_PREDEFINED_TERMINALS)
                 ) { }
         };
     };

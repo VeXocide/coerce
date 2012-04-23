@@ -4,12 +4,12 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_RESERVE_HPP
+#if !defined(BOOST_COERCE_RESERVE_HPP)
 #define BOOST_COERCE_RESERVE_HPP
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/coerce/detail/precision.hpp>
 #include <boost/coerce/detail/reserve.hpp>
@@ -34,12 +34,12 @@ namespace boost { namespace coerce { namespace traits {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
 
-#ifndef BOOST_NO_INTRINSIC_WCHAR_T
+#if !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     template <typename Tag>
     struct reserve_size_impl<wchar_t, Tag> {
         BOOST_STATIC_CONSTANT(std::size_t, value = 1);
     };
-#endif
+#endif  // !defined(BOOST_NO_INTRINSIC_WCHAR_T)
 
     template <typename T, typename Tag>
     struct reserve_size_impl_integral {
@@ -101,8 +101,7 @@ namespace boost { namespace coerce { namespace traits {
     struct reserve_size_impl<unsigned long, Tag>
         : reserve_size_impl_integral<unsigned long, Tag> { };
 
-#ifdef BOOST_HAS_LONG_LONG
-
+#if defined(BOOST_HAS_LONG_LONG)
     template <typename Tag>
     struct reserve_size_impl<boost::long_long_type, Tag>
         : reserve_size_impl_integral<boost::long_long_type, Tag> { };
@@ -110,8 +109,7 @@ namespace boost { namespace coerce { namespace traits {
     template <typename Tag>
     struct reserve_size_impl<boost::ulong_long_type, Tag>
         : reserve_size_impl_integral<boost::ulong_long_type, Tag> { };
-
-#endif  // BOOST_HAS_LONG_LONG
+#endif  // defined(BOOST_HAS_LONG_LONG)
 
     template <typename T, typename Tag>
     struct reserve_size_impl_floating_point {
@@ -154,4 +152,4 @@ namespace boost { namespace coerce { namespace traits {
 
 } } }  // namespace boost::coerce::traits
 
-#endif  // BOOST_COERCE_RESERVE_HPP
+#endif  // !defined(BOOST_COERCE_RESERVE_HPP)

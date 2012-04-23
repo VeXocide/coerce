@@ -4,12 +4,12 @@
 // (See accompanying file ../../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_COERCE_DETAIL_QI_HPP
+#if !defined(BOOST_COERCE_DETAIL_QI_HPP)
 #define BOOST_COERCE_DETAIL_QI_HPP
 
-#ifdef _MSC_VER
-#pragma once
-#endif
+#if defined(_MSC_VER) && _MSC_VER >= 1200
+    #pragma once
+#endif  // defined(_MSC_VER) && _MSC_VER >= 1200
 
 #include <boost/coerce/reserve.hpp>
 #include <boost/coerce/string.hpp>
@@ -18,7 +18,13 @@
 #include <boost/spirit/home/qi/char.hpp>
 #include <boost/spirit/home/qi/numeric.hpp>
 #include <boost/spirit/home/qi/operator/optional.hpp>
-#include <boost/spirit/home/qi/parse.hpp>
+
+#include <boost/spirit/version.hpp>
+#if SPIRIT_VERSION < 0x3000
+    #include <boost/spirit/home/qi/parse.hpp>
+#else
+    #include <boost/spirit/home/qi/core/parse.hpp>
+#endif  // SPIRIT_VERSION < 0x3000
 
 namespace boost { namespace coerce { namespace detail {
 
@@ -47,4 +53,4 @@ namespace boost { namespace coerce { namespace detail {
 
 } } }  // namespace boost::coerce::detail
 
-#endif  // BOOST_COERCE_DETAIL_QI_HPP
+#endif  // !defined(BOOST_COERCE_DETAIL_QI_HPP)
