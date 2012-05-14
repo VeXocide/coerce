@@ -37,7 +37,7 @@ struct strtol {
 namespace boost { namespace coerce { namespace traits {
 
     template <std::size_t N>
-    struct as<long int, char [N], tag::none>
+    struct as<long int, char [N]>
         : strtol { };
 
 } } }  // namespace boost::coerce::traits

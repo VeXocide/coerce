@@ -28,7 +28,7 @@ namespace boost { namespace coerce {
         template <
             typename Target
           , typename Source
-          , typename Tag
+          , typename Tag = tag::none
           , typename Enable = void
         >
         struct as
