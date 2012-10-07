@@ -103,6 +103,18 @@ namespace boost { namespace coerce { namespace traits {
     struct string_traits_impl<std::vector<T, Allocator> > {
         typedef std::vector<T, Allocator> type;
 
+        typedef typename type::const_iterator const_iterator;
+
+        static inline const_iterator
+        begin(type const & value) {
+            return value.begin();
+        }
+
+        static inline const_iterator
+        end(type const & value) {
+            return value.end();
+        }
+
         typedef std::back_insert_iterator<type> back_insert_iterator;
 
         static inline back_insert_iterator
@@ -134,6 +146,10 @@ namespace boost { namespace coerce { namespace traits {
     template <typename T>
     struct is_source_string_impl<boost::iterator_range<T> >
         : traits::is_char<typename boost::iterator_range<T>::value_type> { };
+
+    template <typename T, typename Allocator>
+    struct is_source_string_impl<std::vector<T, Allocator> >
+        : traits::is_char<T> { };
 
     template <typename T, typename Enable = void>
     struct is_source_string

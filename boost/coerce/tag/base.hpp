@@ -114,4 +114,4 @@ namespace boost { namespace coerce { namespace tag {
 
 } } }  // namespace boost::coerce::tag
 
-#endif  // !defined(BOOST_COERCE_TAG_HPP)
+#endif  // !defined(BOOST_COERCE_TAG_BASE_HPP)

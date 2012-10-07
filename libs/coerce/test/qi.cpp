@@ -12,6 +12,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <string>
+#include <vector>
 
 BOOST_AUTO_TEST_CASE(qi) {
     using namespace boost;
@@ -68,6 +69,11 @@ BOOST_AUTO_TEST_CASE(qi) {
 
     BOOST_CHECK_EQUAL(coerce::as<int>(std::string("1")), 1);
     BOOST_CHECK_EQUAL(coerce::as<int>(std::wstring(L"1")), 1);
+
+    std::vector<char> vector_char(1, '1');
+    BOOST_CHECK_EQUAL(coerce::as<int>(vector_char), 1);
+    std::vector<wchar_t> vector_wchar_t(1, L'1');
+    BOOST_CHECK_EQUAL(coerce::as<int>(vector_wchar_t), 1);
 }
 
 BOOST_AUTO_TEST_CASE(throw_) {
