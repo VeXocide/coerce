@@ -28,7 +28,7 @@ namespace boost { namespace coerce { namespace detail {
         static inline bool
         call(Target & target, Source const & source, Tag const & tag) {
             typedef traits::string_traits<Target> string_traits;
-            
+
             detail::call_reserve(
                 target, traits::reserve_size<Source, Tag>::call(source, tag));
 
@@ -36,7 +36,7 @@ namespace boost { namespace coerce { namespace detail {
                 typename string_traits::back_insert_iterator, Target, Source
             > generator(tag);
 
-            return spirit::karma::generate(
+            return boost::spirit::karma::generate(
                 string_traits::back_inserter(target), generator, source);
         }
     };

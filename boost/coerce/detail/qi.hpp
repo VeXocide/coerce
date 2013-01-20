@@ -44,7 +44,7 @@ namespace boost { namespace coerce { namespace detail {
                 typename string_traits::const_iterator, Target, Source
             > parser(tag);
 
-            bool result = spirit::qi::parse(
+            bool result = boost::spirit::qi::parse(
                 iterator, end, parser, target);
 
             return result && (iterator == end);
