@@ -1,0 +1,132 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Backend]
+
+By default Coerce relies on Spirit but it is possible to implement your own conversion backends.
+
+[heading Namespace]
+
+For `as`:
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <
+        typename Target,
+        typename Source,
+        typename Tag,
+        typename Enable = void
+    >
+    struct as
+    {
+        typedef <see below> type;
+    };
+
+
+where type is of:
+
+    struct <unspecified> {
+        template <typename Target, typename Source, typename Tag>
+        static bool
+        call(Target &, Source const &, Tag const &);
+    };
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`Target`] [The target type.] [None]]
+    [[`Source`] [The source type.] [None]]
+    [[`Tag`] [A tag type.]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `transform_attribute` utilizing SFINAE
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`Target`] [An arbitrary type.]]
+    [[`target`] [An instance of `Target`.]]
+    [[`Source`] [An arbitrary type.]]
+    [[`source`] [An instance of `Source`.]]
+    [[`Tag`] [A tag type.]]
+    [[`tag`] [An instance of `Tag`.]]
+]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`as<Target, Source, Tag>::type`]
+        [The type of an interface, please see __advanced_interface__.]
+    ]
+    [
+        [`<unspecified>::template call<Target, Source, Tag>(target, source, tag)`]
+        [A function to convert `source` to `target` with the possible help of
+            `tag`, returning whether it was successful.]
+    ]
+]
+
+[heading Predefined specializations]
+
+Coerce dispatches the conversion to either Qi or Karma by default, depending on
+the Target and Source types.
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+
+    #include <cctype>  // for std::isspace
+    #include <cerrno>  // for errno
+    #include <cstdio>  // for std::strtol
+    #include <iostream>
+
+    struct strtol {
+        template <typename Target, typename Source, typename Tag>
+        static inline bool
+        call(Target & target, Source const & source, Tag const &) {
+            char *end;
+        
+            if (std::isspace(*source)) {
+                return false;
+            }
+
+            errno = 0;
+            target = std::strtol(source, &end, 10);
+
+            if (errno != 0 || *end != 0 || source == end) {
+                return false;
+            }
+
+            return true;
+        }
+    };
+
+    namespace boost { namespace coerce { namespace traits {
+
+        template <std::size_t N>
+        struct as<long int, char [N], tag::none>
+            : strtol { };
+
+    } } }  // namespace boost::coerce::traits
+
+    int
+    main() {
+        using namespace boost;
+
+        std::cout << coerce::as<long int>("23") << std::endl;
+    }
+
+[endsect]

@@ -1,0 +1,41 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Synopsis]
+
+[heading namespace]
+
+    namespace boost::coerce
+
+[heading as]
+
+    template <typename Target, typename Source>
+    Target as(Source const &);
+
+    template <typename Target, typename Source, typename Tag>
+    Target as(Source const &, Tag const &);
+
+`Target` is required to be `CopyConstructible`.
+
+[heading as_default]
+
+    template <typename Target, typename Source>
+    Target as_default(Source const &, Target const & = Target());
+
+    template <typename Target, typename Source, typename Tag>
+    Target as_default(Source const &, Tag const &, Target const & = Target());
+
+`Target` is required to be `CopyConstructable`.
+`Target` is required to be `DefaultConstructible` when not providing a default value.
+
+[heading bad_cast]
+
+    class bad_cast
+        : std::bad_cast;
+
+[endsect]

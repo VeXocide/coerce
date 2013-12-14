@@ -1,0 +1,81 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section is_sequence]
+
+[heading Description]
+
+`is_sequence` is a metafunction that detects if a given type is a sequence.
+
+[caution `is_sequence<T>` requires `back_inserter<T>` to be specialized.]
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Enable>
+    struct is_sequence
+    {
+        <unspecified>;
+    };
+
+[heading Template parameters]
+
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [The type to detect.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `transform_attribute` utilizing SFINAE
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+    [[`Traits`] [A character traits type.]]
+    [[`Allocator`] [A standard allocator type.]]
+]
+
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`is_sequence<T>::type`]
+        [`mpl::true_` if T should be treated as a character type, and
+            `mpl::false_` otherwise. Generally, any implementation of
+            `is_sequence` needs to behave as if if was a
+            __mpl_boolean_constant__.]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Semantics]]
+    [[`T`] [`mpl::false_`]]
+    [[`std::basic_string<T, Traits, Allocator>`] [`mpl::true_`]]
+    [[`std::vector<T, Allocator>`] [`mpl::true_`]]
+]
+
+[heading Example]
+
+    template <typename T, typename Traits, typename Allocator>
+    struct is_sequence<std::basic_string<T, Traits, Allocator> >
+        : mpl::true_ { };
+
+[endsect]

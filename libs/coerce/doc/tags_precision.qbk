@@ -1,0 +1,56 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Precision]
+
+[heading Description]
+
+Specify the decimal precision to be used when generating floating point types,
+it is similar to `std::setprecision`.
+
+[heading Header]
+
+    #include boost/coerce/tag/precision.hpp
+
+[heading Synopsis]
+
+    struct precision {
+        precision(unsigned const &);
+    }
+
+[heading String to type]
+
+Not applicable, a static assertion will be trigger upon use.
+
+[heading Type to string]
+
+This will generate a string representation of a floating point type rounded to
+the specified number of decimals.
+
+Using this conversion with a non-floating point type will lead to a static assertion.
+
+[heading Example]
+
+        #include <boost/coerce.hpp>
+        #include <boost/coerce/tag/precision.hpp>
+
+        #include <string>
+
+        int
+        main() {
+            using namespace boost;
+
+            std::string s = coerce::as<std::string>(1.0182818L, coerce::tag::precision(2));
+
+            return 0;
+        }
+
+This will cause 1.0182818 to be rounded to 2 decimals when generated, resulting
+in the string "1.02".
+
+[endsect]

@@ -1,0 +1,74 @@
+[section sequence_traits]
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::traits`]]
+]
+
+[heading Synopsis]
+
+    template <typename T, typename Enable>
+    struct sequence_traits {
+        typedef <unspecified> iterator;
+
+        static iterator back_inserter(T &);
+    };
+
+[heading Template parameters]
+[table
+    [[Parameter] [Description] [Default]]
+    [[`T`] [An arbitrary type.] [None]]
+    [
+        [`Enable`]
+        [Helper template parameter usable to selectively enable or disable
+            certain specializations of `back_inserter` utilizing SFINAE 
+            (i.e. `boost::enable_if` or `boost::disable_if`).]
+        [`void`]
+    ]
+]
+
+[variablelist Notation
+    [[`T`] [An arbitrary type.]]
+    [[`t`] [An instance of `T`.]]
+    [[`Traits`] [A character traits type.]]
+    [[`Allocator`] [A standard allocator type.]]
+]
+
+[heading Expression semantics]
+
+[table
+    [[Expression] [Semantics]]
+    [
+        [`sequence_traits<T>::iterator`]
+        [Evaluates to the return type of `sequence_traits<T>::back_inserter(t)`
+            and is a back insert iterator type.]
+    ]
+    [
+        [`sequence_traits<T>::back_inserter(t)`]
+        [Returns a back insert iterator for `t`]
+    ]
+]
+
+[heading Predefined specializations]
+
+[table
+    [[Type] [Semantics]]
+    [[`std::basic_string<T, Traits, Allocator>`] []]
+    [[`std::vector<T, Allocator>`] []]
+]
+
+[heading Example]
+
+    template <typename T, typename Traits, typename Allocator>
+    struct sequence_traits {
+        typedef std::back_insert_iterator<std::basic_string<T, Traits, Allocator> > iterator;
+    
+        static inline iterator
+        back_inserter(std::basic_string<T, Traits, Allocator> & value) {
+            return std::back_inserter(value);
+        }
+    };
+
+[endsect]

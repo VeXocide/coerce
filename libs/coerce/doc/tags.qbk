@@ -1,0 +1,42 @@
+[/              
+                Copyright Jeroen Habraken 2011.
+
+   Distributed under the Boost Software License, Version 1.0.
+   (See accompanying file ../../../LICENSE_1_0.txt or copy at
+            http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section Tags]
+
+[heading Description]
+
+Essentially tags are to Coerce what manipulators are to stream objects, a way to influence format generation and parsing.
+
+[heading Namespace]
+
+[table
+    [[Name]]
+    [[`boost::coerce::tags`]]
+]
+
+[heading Example]
+
+    #include <boost/coerce.hpp>
+    #include <boost/coerce/tag/base.hpp>
+
+    int
+    main() {
+        using namespace boost;
+    
+        int i = coerce::as<int>("0x23", coerce::tag::hex());
+
+        int j = coerce::as_default<int>("XXX", coerce::tag::hex());
+        int k = coerce::as_default<int>("XXX", 23, coerce::tag::hex());
+
+        return 0;
+    }
+
+[include tags_base.qbk]
+[include tags_precision.qbk]
+
+[endsect]
